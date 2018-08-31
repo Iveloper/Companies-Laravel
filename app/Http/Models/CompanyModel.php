@@ -5,6 +5,7 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Http\Request;
+
 class CompanyModel extends Model {
 
     protected $table = 'company';
@@ -15,10 +16,10 @@ class CompanyModel extends Model {
     public $perPage = 5;
 
     public function getCompanies($request) {
-         $usercompany = DB::table('Person')
-                 ->join('company', 'company.id', '=', 'Person.company_id')
-                 ->select('Person.*', 'company.name AS company');
-        
+        $usercompany = DB::table('Person')
+                ->join('company', 'company.id', '=', 'Person.company_id')
+                ->select('Person.*', 'company.name AS company');
+
 
         $query = DB::table('company');
 
@@ -41,17 +42,18 @@ class CompanyModel extends Model {
                 $this->sort = $query->orderBy($sortParam, $this->order)->get();
             }
         }
+        
         if ($request->get('option')) {
             $this->perPage = $request->get('option');
         }
 
-        $totalRows = $query->get();
+        $rows = $query->paginate($this->perPage);
+        
         return [
-            'companies' => $query->paginate($this->perPage),
+            'companies' => $rows,
             'sort' => $this->sort,
             'order' => $this->order,
             'perPage' => $this->perPage,
-            'total' => $totalRows,
             'usercompany' => $usercompany
         ];
     }
@@ -68,7 +70,7 @@ class CompanyModel extends Model {
                     ->update(['name' => $data['name'],
                 'adress' => $data['email'],
                 'bulstat' => $data['bulstat'],
-                'contragent_type' => $data['contragent_type'],        
+                'contragent_type' => $data['contragent_type'],
                 'email' => $data['email'],
                 'phone' => $data['phone']
             ]);

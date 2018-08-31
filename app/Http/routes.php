@@ -37,15 +37,17 @@
 
 Route::group(['prefix' => 'company'], function () {
     Route::get('/', 'CompanyController@index');
+    
    // Route::get('/sort/{sort}/order/{order}', 'CompanyController@index');
-    Route::get('/companydelete/id/{id}', 'CompanyController@companydelete');
-    Route::get('/companyadd', function() {
-        return view('/companies/companyadd');
-    });
-    Route::post('/companyaddForm', 'CompanyController@companyadd');
-    Route::post('/companyeditForm', 'CompanyController@companyadd');
-    Route::get('/companyrecord/id/{id}', 'CompanyController@companyrecord');
-    Route::get('/companyedit/id/{id}', 'CompanyController@companyedit');
+    
+    Route::get('/create', 'CompanyController@create');
+    Route::get('/{id}/edit', ['as' => 'company_edit', 'uses' => 'CompanyController@edit']);
+    
+    Route::post('/{id}', 'CompanyController@update');
+    Route::post('/store', 'CompanyController@store');
+    
+    Route::get('/{id}', 'CompanyController@show');
+    Route::get('/delete/{id}', 'CompanyController@delete');
 });
 
 Route::group(['prefix' => 'people'], function(){

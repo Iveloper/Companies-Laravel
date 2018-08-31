@@ -20,17 +20,26 @@ class CompanyController extends Controller {
         $this->model = $model;
     }
 
+    /**
+     * Return companies ...
+     * @param Request $request
+     * @return type
+     */
     public function index(Request $request) {
         $companies = $this->model->getCompanies($request);
         return view('/companies/list')->with('companies', $companies);
     }
 
-    public function companydelete($id) {
-        $delete = $this->model->deleteCompany($id);
-        return redirect('/company');
+    public function show($id) {
+        $view = $this->model->record($id);
+        return view('companies/record', compact('view'));
     }
 
-    public function companyadd(Request $request) {
+    public function create() {
+        return view('/company/companyadd');
+    }
+
+    public function update($id, Request $request) {
         $this->validate($request, [
             'name' => 'min:5|max:30|required',
             'adress' => 'min:10|required',
@@ -39,18 +48,35 @@ class CompanyController extends Controller {
             'phone' => 'size:10|required',
             'note' => 'max: 250'
         ]);
-        $add = $this->model->addCompany($_POST);
+        $add = $this->model->update($id, $request->all());
+
+        //check $add 
         return redirect('/company');
     }
 
-    public function companyrecord($id) {
-        $view = $this->model->record($id);
-        return view('companies/record', compact('view'));
+    public function store(Request $request) {
+        $this->validate($request, [
+            'name' => 'min:5|max:30|required',
+            'adress' => 'min:10|required',
+            'bulstat' => 'max:10|required',
+            'email' => 'min:8|max:100',
+            'phone' => 'size:10|required',
+            'note' => 'max: 250'
+        ]);
+        $add = $this->model->store($request->all());
+        
+        //check model response
+        return redirect('/company');
     }
 
-    public function companyedit($id) {
+    public function edit($id) {
         $edit = $this->model->record($id);
         return view('/companies/edit', compact('edit'));
+    }
+
+    public function delete($id) {
+        $delete = $this->model->deleteCompany($id);
+        return redirect('/company');
     }
 
 }

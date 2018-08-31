@@ -41,7 +41,7 @@
         <td>{{ $company->bulstat }}</td>
         <td>{{ $company->note }}</td>
         <td><a href="company/companyrecord/id/{{ $company->id }}"><button type="submit" class="btn btn-info">Info</button></a></td>
-        <td><a href="company/companyedit/id/{{ $company->id }}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
+        <td><a href="{{ route('company_edit', $company->id) }}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
         <td><a href="company/companydelete/id/{{ $company->id }}"><button type="submit" class="btn btn-danger">Delete</button></a></td>
     </tr>
 
@@ -66,5 +66,5 @@
         @endforeach
         <input type="submit"class="btn btn-info"></button>
     </select>
-    <div><h4>Total Rows: {{ count($companies['total']) }}</h4></div>
+    <div><h4>Total Rows: {{ $companies['companies']->total() }}</h4></div>
     @endsection
