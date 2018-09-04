@@ -9,7 +9,7 @@
     </ul>
 </div>
 @endif
-{!! Form::open(['url'=>'/people/addForm', 'method'=>'post']) !!}
+{!! Form::open(array('route'=> 'person_store')) !!}
 <div class='form' style='text-align: center'>
     <div class="form-group row">
         {!! Form::label('name', 'Name') !!}<br>

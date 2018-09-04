@@ -9,6 +9,7 @@
 namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\Http\Controllers\Controller;
 
 class PersonModel extends Model {
 
@@ -21,10 +22,10 @@ class PersonModel extends Model {
 
     public function getPersons($request){
         
-         $query = DB::table('Person');
-//                 ->join('company', 'company.id', '=', 'Person.company_id')
-//                 ->select('Person.*', 'company.name AS company');
-     
+         $query = DB::table('Person')
+                 ->leftJoin('company', 'company.id', '=', 'Person.company_id')
+                 ->select('Person.*', 'company.name AS company');
+
         if ($request->get('searchPerson')) {
             $query->where([
                 ['name', 'LIKE', '%' . $request->get('searchPerson')['name'] . '%'],
@@ -60,19 +61,23 @@ class PersonModel extends Model {
     }
     
     public function addPerson($data) {
+            $data = request()->except(['_token']);
+            $insert = DB::table('Person')->insert($data);
+            Controller::FlashMessages('The person has been inserted', 'success');
+            return $insert;
+    }
+    
+    public function updatePerson($data) {
         if (isset($data['id']) && $data['id']) {
             $update = DB::table('Person')
                     ->where('id', $data['id'])
                     ->update(['name' => $data['name'],
                 'adress' => $data['adress'],
                 'phone' => $data['phone'],
-                'email' => $data['email']
+                'email' => $data['email'],
             ]);
+            Controller::FlashMessages('The person has been updated', 'success');
             return $update;
-        } else {
-            $data = request()->except(['_token']);
-            $insert = DB::table('Person')->insert($data);
-            return $insert;
         }
     }
     
@@ -83,6 +88,7 @@ class PersonModel extends Model {
     
     public function deletePerson($id) {
         $delete = DB::table('Person')->where('id', '=', $id)->delete();
+        Controller::FlashMessages('The person has been deleted', 'danger');
         return $delete;
     }
     

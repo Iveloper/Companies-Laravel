@@ -1,10 +1,10 @@
 @extends('layout.main')
-
 @section('content')
-<a href="company/companyadd/"><button type="button" class="btn btn-primary" style="width:100%;">Add</button></a>
+
+<a href="{{ route('company_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">Add</button></a>
 
 
-<form method='GET' class="form-horizontal" action='/company' style="width:2260px; margin-top: 10px; margin-bottom: 10px;">
+<form method='GET' class="form-horizontal" action='/company' style="margin-top: 10px; margin-bottom: 10px;">
     <div class="col-md-2">
         <input type="text" class="form-control" name="searchCompany[name]" placeholder="Search by Name.." value="">
     </div>
@@ -25,6 +25,7 @@
     <th><a href="/company?sort=name&order={{ $companies['order'] }}">Name</a></th>
     <th><a href="/company?sort=adress&order={{ $companies['order'] }}">Adress</a></th>
     <th><a href="/company?sort=bulstat&order={{ $companies['order'] }}">Bulstat</a></th>
+    <th><a href="/company?sort=contragent_type&order={{ $companies['order'] }}">Type of Contragent</a></th>
     <th><a href="/company?sort=note&order={{ $companies['order'] }}">Note</a></th>
     <th></th>
     <th></th>
@@ -39,10 +40,11 @@
         <td><a href="/displayperson?id={{ $company->id }}">{{ $company->name }}</a></td>
         <td>{{ $company->adress }}</td>
         <td>{{ $company->bulstat }}</td>
+        <td>{{ $company->contragent_type }}</td>
         <td>{{ $company->note }}</td>
-        <td><a href="company/companyrecord/id/{{ $company->id }}"><button type="submit" class="btn btn-info">Info</button></a></td>
+        <td><a href="{{ route('company_show', $company->id) }}"><button type="submit" class="btn btn-info">Info</button></a></td>
         <td><a href="{{ route('company_edit', $company->id) }}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
-        <td><a href="company/companydelete/id/{{ $company->id }}"><button type="submit" class="btn btn-danger">Delete</button></a></td>
+        <td><a href="{{ route('company_delete', $company->id) }}"><button type="submit" class="btn btn-danger">Delete</button></a></td>
     </tr>
 
     @endforeach
@@ -51,8 +53,8 @@
 </table>
 {{ $companies['companies']->links() }}
 
-<form method="GET" action="/company">
-    <select name="option">
+<form method="GET" action="/company"  style="text-align: center;">
+    <select name="option" style="margin-right: 2px;">
 
         <?php $perPageOptions = [5, 10, 15, 20] ?>
         @foreach ($perPageOptions as $perPageOption) 
@@ -64,7 +66,7 @@
         @endif
 
         @endforeach
-        <input type="submit"class="btn btn-info"></button>
+        <input type="submit" class="btn btn-info" style="margin-left: 2px;"></button>
     </select>
     <div><h4>Total Rows: {{ $companies['companies']->total() }}</h4></div>
     @endsection

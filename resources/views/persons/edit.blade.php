@@ -1,8 +1,16 @@
 @extends('layout.main')
 
 @section('content')
-
-{!! Form::open(['url'=>'/people/editForm', 'method'=>'post']) !!}
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+{!! Form::open(array('route' => array('person_update', $edit[0]->id), 'method'=>'post')) !!}
 {{ Form::hidden('id', $edit[0]->id) }}
 <div class='form' style='text-align: center'>
     <div class="form-group row">

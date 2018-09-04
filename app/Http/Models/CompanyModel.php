@@ -4,7 +4,7 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CompanyModel extends Model {
 
@@ -16,13 +16,11 @@ class CompanyModel extends Model {
     public $perPage = 5;
 
     public function getCompanies($request) {
-        $usercompany = DB::table('Person')
-                ->join('company', 'company.id', '=', 'Person.company_id')
-                ->select('Person.*', 'company.name AS company');
 
 
-        $query = DB::table('company');
-
+        $query = DB::table('company')
+                ->leftJoin('company_type', 'company.contragent_type', '=', 'company_type.id')
+                ->select('company.id','company.name','adress','bulstat','phone', 'email', 'note', 'company_type.name as contragent_type');
         if ($request->get('searchCompany')) {
             $query->where([
                 ['name', 'LIKE', '%' . $request->get('searchCompany')['name'] . '%'],
@@ -32,7 +30,6 @@ class CompanyModel extends Model {
         }
 
         $sortParam = $request->get('sort', 'id');
-        //$sort = $query->orderBy($sortParam, $this->order)->get();
         if ($request->get('sort')) {
             if ($request->get('order') && $request->get('order') == 'ASC') {
                 $this->order = 'DESC';
@@ -42,28 +39,35 @@ class CompanyModel extends Model {
                 $this->sort = $query->orderBy($sortParam, $this->order)->get();
             }
         }
-        
+
         if ($request->get('option')) {
             $this->perPage = $request->get('option');
         }
 
         $rows = $query->paginate($this->perPage);
-        
+
         return [
             'companies' => $rows,
             'sort' => $this->sort,
             'order' => $this->order,
-            'perPage' => $this->perPage,
-            'usercompany' => $usercompany
+            'perPage' => $this->perPage
         ];
     }
 
     public function deleteCompany($id) {
         $delete = DB::table('company')->where('id', '=', $id)->delete();
+        Controller::FlashMessages('The company has been', 'danger');
         return $delete;
     }
 
     public function addCompany($data) {
+          $data = request()->except(['_token']);
+            $insert = DB::table('company')->insert($data);
+            Controller::FlashMessages('The company has been added', 'success');
+            return $insert;
+        }
+
+    public function updateCompany($data) {
         if (isset($data['id']) && $data['id']) {
             $update = DB::table('company')
                     ->where('id', $data['id'])
@@ -74,17 +78,19 @@ class CompanyModel extends Model {
                 'email' => $data['email'],
                 'phone' => $data['phone']
             ]);
+            Controller::FlashMessages('The company has been updated', 'success');
             return $update;
-        } else {
-            $data = request()->except(['_token']);
-            $insert = DB::table('company')->insert($data);
-            return $insert;
         }
     }
 
     public function record($id) {
         $view = DB::table('company')->where('id', '=', $id)->select('*')->get();
         return $view;
+    }
+    
+    public function getContragentTypes() {
+        $query = DB::table('company_type')->select('*')->get();
+        return $query;
     }
 
 }

@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\URL;
 use App\Http\Models\CompanyModel;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCompanyPost;
 
 class CompanyController extends Controller {
 
@@ -36,42 +37,26 @@ class CompanyController extends Controller {
     }
 
     public function create() {
-        return view('/company/companyadd');
+        $getTypes = $this->model->getContragentTypes();
+        return view('companies/add', compact('getTypes'));
     }
 
-    public function update($id, Request $request) {
-        $this->validate($request, [
-            'name' => 'min:5|max:30|required',
-            'adress' => 'min:10|required',
-            'bulstat' => 'max:10|required',
-            'email' => 'min:8|max:100',
-            'phone' => 'size:10|required',
-            'note' => 'max: 250'
-        ]);
-        $add = $this->model->update($id, $request->all());
-
+    public function update($id, Request $request, StoreCompanyPost $company) {
+        $update = $this->model->updateCompany($request->all());
         //check $add 
         return redirect('/company');
     }
 
-    public function store(Request $request) {
-        $this->validate($request, [
-            'name' => 'min:5|max:30|required',
-            'adress' => 'min:10|required',
-            'bulstat' => 'max:10|required',
-            'email' => 'min:8|max:100',
-            'phone' => 'size:10|required',
-            'note' => 'max: 250'
-        ]);
-        $add = $this->model->store($request->all());
-        
-        //check model response
+    public function store(Request $request, StoreCompanyPost $company) {
+        $add = $this->model->addCompany($request->all());
+
         return redirect('/company');
     }
 
     public function edit($id) {
         $edit = $this->model->record($id);
-        return view('/companies/edit', compact('edit'));
+        $getTypes = $this->model->getContragentTypes();
+        return view('/companies/edit', compact('edit', 'getTypes'));
     }
 
     public function delete($id) {
