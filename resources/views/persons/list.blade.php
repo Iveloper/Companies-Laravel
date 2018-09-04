@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 <a href="{{ route('person_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">Add</button></a>

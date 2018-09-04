@@ -44,6 +44,8 @@ class CompanyModel extends Model {
             $this->perPage = $request->get('option');
         }
 
+        $query->where('user_id', '=', \Auth::user()->id);
+        
         $rows = $query->paginate($this->perPage);
 
         return [
