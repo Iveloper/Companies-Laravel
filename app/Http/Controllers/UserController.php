@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Models\UserModel;
 use App\Http\Requests\StoreUserPost;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller {
 
@@ -62,11 +63,38 @@ class UserController extends Controller {
     }
 
     public function file($id, Request $request) {
-        if ($request->hasFile('avatar')) {
-            $request->file('avatar')->move(public_path() . '/uploads/avatars', $request->file('avatar')->getClientOriginalName());
-            $this->model->uploadAvatar($id, $request);
-            return redirect('/users');
-        }
+        //Storage::putFile(public_path() . '/uploads/avatars/' . Auth::user()->username,$request->file('avatar'));
+        $path = $this->model->getUserAvatarDirectory();
+
+
+//        var_dump(Storage::exists($path));
+//        echo '=<br>';
+//        die;
+//        
+//        if (!Storage::exists($path)) {
+//            Storage::makeDirectory($path);
+//        }
+//        
+//        var_dump($request->file('avatar')->getClientOriginalName());
+//        echo '=<br>';
+//        die;
+//        if ($request->hasFile('avatar')) {
+//            $request->file('avatar')->move($path, $request->file('avatar')->getClientOriginalName());
+//        $content = $request->file('avatar');
+
+//        Storage::disk('local')
+//                ->put(
+//            $request->file('avatar')->getClientOriginalName(),
+//            file_get_contents($request->file('avatar')->getRealPath())
+//        );
+
+        $request->file('avatar')->move($path, $request->file('avatar')->getClientOriginalName());
+        
+//        Storage::disk('local')->put($request->file('avatar')->getClientOriginalName(), $content);
+
+//        Storage::disk('local')->put(\Auth::user()->username, $content);
+        $this->model->uploadAvatar($id, $request);
+        return redirect('/users');
     }
 
 }

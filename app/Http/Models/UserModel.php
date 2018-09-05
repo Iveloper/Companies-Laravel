@@ -109,4 +109,7 @@ class UserModel extends Model {
         return $query;
     }
 
+    public function getUserAvatarDirectory() {
+        return '/uploads/avatars/' . \Auth::user()->username;
+    }
 }

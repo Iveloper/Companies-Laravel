@@ -27,7 +27,7 @@
     @foreach ($users['users'] as $user)
     <tr style="background-color: lightgrey">
         <td>{{ $user->id }}</td>
-        <td><img src="{{ url('/') }}/uploads/avatars/{{ $user->avatar }}" style="width: 45px; max-height: 40px; border-radius: 89%;"></td>
+        <td><img src="{{ url('/') }}/uploads/avatars/{{$user->username}}/{{ $user->avatar }}" style="width: 45px; max-height: 40px; border-radius: 89%;"></td>
         <td>{{ $user->username }}</td>
         <td>{{ $user->email }}</td>
         <td>
