@@ -14,7 +14,7 @@ return [
       |
      */
 
-    'default' => 'local',
+    'default' => 'ftp',
     /*
       |--------------------------------------------------------------------------
       | Default Cloud Filesystem Disk
@@ -41,7 +41,7 @@ return [
         
         'local' => [
             'driver' => 'local',
-            'root' => public_path() . '/uploads',
+            'root' => public_path(),
         ],
         
         'ftp' => [

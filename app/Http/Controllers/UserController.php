@@ -66,6 +66,15 @@ class UserController extends Controller {
         //Storage::putFile(public_path() . '/uploads/avatars/' . Auth::user()->username,$request->file('avatar'));
         $path = $this->model->getUserAvatarDirectory();
 
+        if(!Storage::exists($path)) {
+            Storage::makeDirectory($path);
+        }
+        
+        Storage::put(
+            $path . DIRECTORY_SEPARATOR . $request->file('avatar')->getClientOriginalName(),
+            file_get_contents($request->file('avatar')->getRealPath())
+        );
+        
 
 //        var_dump(Storage::exists($path));
 //        echo '=<br>';
@@ -88,7 +97,7 @@ class UserController extends Controller {
 //            file_get_contents($request->file('avatar')->getRealPath())
 //        );
 
-        $request->file('avatar')->move($path, $request->file('avatar')->getClientOriginalName());
+//        $request->file('avatar')->move($path, $request->file('avatar')->getClientOriginalName());
         
 //        Storage::disk('local')->put($request->file('avatar')->getClientOriginalName(), $content);
 
