@@ -14,7 +14,7 @@ return [
       |
      */
 
-    'default' => 'ftp',
+    'default' => 'local',
     /*
       |--------------------------------------------------------------------------
       | Default Cloud Filesystem Disk
@@ -37,27 +37,22 @@ return [
       |
      */
     'disks' => [
-        
-        
         'local' => [
             'driver' => 'local',
             'root' => public_path(),
         ],
-        
         'ftp' => [
             'driver' => 'ftp',
-            'host' => 'ftp.example.com',
-            'username' => 'your-username',
-            'password' => 'your-password',
-        // Optional FTP Settings...
-        // 'port'     => 21,
-        // 'root'     => '',
+            'host' => '192.168.2.254',
+            'username' => 'webapi',
+            'password' => 'aFqRj@882',
+            // Optional FTP Settings...
+            'port' => 1021,
+            'root' => 'public',
         // 'passive'  => true,
-        // 'ssl'      => true,
+//         'ssl'      => false,
         // 'timeout'  => 30,
         ],
-        
-        
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',
@@ -65,8 +60,6 @@ return [
             'region' => 'your-region',
             'bucket' => 'your-bucket',
         ],
-        
-        
         'rackspace' => [
             'driver' => 'rackspace',
             'username' => 'your-username',
