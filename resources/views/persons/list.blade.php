@@ -41,7 +41,7 @@
 
     <tr style="background-color: lightgrey">
         <td>{{ $company->id }}</td>
-        <td><a href="/displayperson?id={{ $company->id }}">{{ $company->name }}</a></td>
+        <td><a href="{{ route('person_show', $company->id) }}">{{ $company->name }}</a></td>
         <td>{{ $company->adress }}</td>
         <td>{{ $company->phone }}</td>
         <td>{{ $company->email }}</td>

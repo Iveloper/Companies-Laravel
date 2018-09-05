@@ -1,14 +1,14 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 {!! Form::open(array('route' => array('company_update', $edit[0]->id), 'method'=>'post')) !!}
 {{ Form::hidden('id', $edit[0]->id) }}
@@ -36,13 +36,13 @@
     <div class="form-group row">
         {!! Form::label('contragent_type', 'Type of contragent') !!}<br>
         <select name="contragent_type">
-        @foreach ($getTypes as $contragentType => $val)
-        @if ($edit[0]->contragent_type == $val->id)
-        <option selected='selected' value="{{$val->id}}">{{$val->name}}</option>
-        @else
-        <option value="{{$val->id}}">{{$val->name}}</option>
-        @endif
-        @endforeach
+            @foreach ($getTypes as $contragentType => $val)
+            @if ($edit[0]->contragent_type == $val->id)
+            <option selected='selected' value="{{$val->id}}">{{$val->name}}</option>
+            @else
+            <option value="{{$val->id}}">{{$val->name}}</option>
+            @endif
+            @endforeach
         </select>
     </div>
 
@@ -55,5 +55,5 @@
 
 </div>
 {!! Form::close() !!}
-
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
 @endsection

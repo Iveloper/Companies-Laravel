@@ -24,6 +24,7 @@ class StoreUserPost extends Request
     public function rules()
     {
         return [
+            'email' => 'min:8|max:50|required',
             'username' => 'min:5|max:30|required',
             'password' => 'min:10|required',
             'active' => 'size:1'

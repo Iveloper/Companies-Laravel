@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 @if ($errors->any())
@@ -16,6 +16,11 @@
     <div class="form-group row">
         {!! Form::label('username', 'Username') !!}<br>
         {!! Form::text('username', $edit[0]->username, array('class'=>"form-control")) !!}
+    </div>
+    
+    <div class="form-group row">
+        {!! Form::label('email', 'E-mail') !!}<br>
+        {!! Form::text('email', $edit[0]->email, array('class'=>"form-control")) !!}
     </div>
 
     <div class="form-group row">
@@ -35,6 +40,6 @@
     
 </div>
 {!! Form::close() !!}
-
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
 @endsection
 

@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 
@@ -17,6 +17,7 @@
     <th><a href="/users?sort=id&order={{ $users['order'] }}">ID</a></th>
     <th>Avatar</th>
     <th><a href="/users?sort=username&order={{ $users['order'] }}">Name</a></th>
+    <th><a href="/users?sort=email&order={{ $users['order'] }}">E-mail</a></th>
     <th><a href="/users?sort=active&order={{ $users['order'] }}">Active</a></th>
     <th></th>
     <th></th>
@@ -27,15 +28,16 @@
     <tr style="background-color: lightgrey">
         <td>{{ $user->id }}</td>
         <td><img src="{{ url('/') }}/uploads/avatars/{{ $user->avatar }}" style="width: 45px; max-height: 40px; border-radius: 89%;"></td>
-        <td><a href="">{{ $user->username }}</a></td>
+        <td>{{ $user->username }}</td>
+        <td>{{ $user->email }}</td>
         <td>
             @if ($user->active == 1)
             <div id="active">
                 
-                <a href="{{ route('user_deactivate', $user->id) }}"><i class="fa fa-check-circle">Deactivate</i></a>
+                <a href="{{ route('user_deactivate', $user->id) }}"><i class="fa fa-check-circle"></i></a>
             </div>
             @else
-                <a href="{{ route('user_activate', $user->id) }}"><i class="fa fa-check-circle">Activate</i></a>
+            <a href="{{ route('user_activate', $user->id) }}"><i class="fa fa-circle"></i></a>
                 
             @endif
         </td>

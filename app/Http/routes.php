@@ -39,7 +39,6 @@ Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 
 Route::post('/auth', 'HomeController@auth');
 
-
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'company'], function () {
         Route::get('/', ['as' => 'company_index', 'uses' => 'CompanyController@index']);

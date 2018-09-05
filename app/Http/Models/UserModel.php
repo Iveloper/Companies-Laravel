@@ -62,7 +62,7 @@ class UserModel extends Model {
         $data = request()->except(['_token']);
         $data['password'] = bcrypt($data['password']);
         $insert = DB::table('users')->insert([
-            ['username' => $data['username'], 'password' => $data['password'], 'active' => $data['active']]
+            ['email' => $data['email'], 'username' => $data['username'], 'password' => $data['password'], 'active' => $data['active']]
         ]);
         Controller::FlashMessages('The user has been added', 'success');
         return $insert;
@@ -73,6 +73,7 @@ class UserModel extends Model {
             $update = DB::table('users')
                     ->where('id', $data['id'])
                     ->update(['username' => $data['username'],
+                'email' => $data['email'],
                 'active' => $data['active']
             ]);
             Controller::FlashMessages('The user has been updated', 'success');
@@ -81,7 +82,7 @@ class UserModel extends Model {
     }
 
     public function record($id) {
-        $view = DB::table('users')->where('id', '=', $id)->select('id', 'username', 'active')->get();
+        $view = DB::table('users')->where('id', '=', $id)->select('id', 'email', 'username', 'active')->get();
         return $view;
     }
 

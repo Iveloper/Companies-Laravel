@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 
@@ -11,9 +11,6 @@
     <th><a href="/company?sort=email&order=">Email</a></th>
     <th><a href="/company?sort=phone&order=">Phone</a></th>
     <th><a href="/company?sort=note&order=">Note</a></th>
-    <th></th>
-    <th></th>
-    <th></th>
 </thead>
 
 <tbody>
@@ -30,8 +27,8 @@
         </tr>
         
     @endforeach
-    
 </tbody>
 </table>
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
 
 @endsection

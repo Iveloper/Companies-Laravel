@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 @if ($errors->any())
@@ -37,5 +37,5 @@
     
 </div>
 {!! Form::close() !!}
-
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
 @endsection

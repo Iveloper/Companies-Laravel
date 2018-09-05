@@ -37,7 +37,7 @@
 
     <tr style="background-color: lightgrey">
         <td>{{ $company->id }}</td>
-        <td><a href="/displayperson?id={{ $company->id }}">{{ $company->name }}</a></td>
+        <td><a href="{{ route('company_show', $company->id) }}">{{ $company->name }}</a></td>
         <td>{{ $company->adress }}</td>
         <td>{{ $company->bulstat }}</td>
         <td>{{ $company->contragent_type }}</td>

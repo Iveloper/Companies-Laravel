@@ -26,6 +26,9 @@ class HomeController extends Controller {
         return view('auth.login');
     }
 
+    public function register(){
+        return view('auth.register');
+    }
     public function auth(Request $request) {
         if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password'), 'active' => 1])) {
             // The user is active, not suspended, and exists.

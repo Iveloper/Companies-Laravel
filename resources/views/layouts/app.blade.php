@@ -38,16 +38,15 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel
-                </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
+                    
+                    <li><a href="{{ url('/company') }}">Company</a></li>
+                    <li><a href="{{ url('/people') }}">People</a></li>
+                    <li><a href="{{ url('/users') }}">Users</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -55,11 +54,11 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
+                            <img src="{{ url('/') }}/uploads/avatars/{{ Auth::user()->avatar }}" style="width: 45px; max-height: 40px; border-radius: 89%;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                {{ Auth::user()->username }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">

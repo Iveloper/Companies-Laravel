@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layouts.app')
 @section('content')
 @if ($errors->any())
 <div class="alert alert-danger">
@@ -10,6 +10,7 @@
 </div>
 @endif
 {!! Form::open(array('route'=> 'company_store')) !!}
+{!! Form::hidden('user_id', Auth::user()->id ) !!}
 <div class='form' style='text-align: center'>
     <div class="form-group row">
         {!! Form::label('name', 'Name') !!}<br>
@@ -55,4 +56,5 @@
 
 </div>
 {!! Form::close() !!}
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
 @endsection
