@@ -20,7 +20,7 @@ class CompanyModel extends Model {
 
         $query = DB::table('company')
                 ->leftJoin('company_type', 'company.contragent_type', '=', 'company_type.id')
-                ->select('company.id','company.name','adress','bulstat','phone', 'email', 'note', 'company_type.name as contragent_type');
+                ->select('company.id', 'company.name', 'adress', 'bulstat', 'phone', 'email', 'note', 'company_type.name as contragent_type');
         if ($request->get('searchCompany')) {
             $query->where([
                 ['name', 'LIKE', '%' . $request->get('searchCompany')['name'] . '%'],
@@ -45,7 +45,7 @@ class CompanyModel extends Model {
         }
 
         $query->where('user_id', '=', \Auth::user()->id);
-        
+
         $rows = $query->paginate($this->perPage);
 
         return [
@@ -63,18 +63,18 @@ class CompanyModel extends Model {
     }
 
     public function addCompany($data) {
-          $data = request()->except(['_token']);
-            $insert = DB::table('company')->insert($data);
-            Controller::FlashMessages('The company has been added', 'success');
-            return $insert;
-        }
+        $data = request()->except(['_token']);
+        $insert = DB::table('company')->insert($data);
+        Controller::FlashMessages('The company has been added', 'success');
+        return $insert;
+    }
 
     public function updateCompany($data) {
         if (isset($data['id']) && $data['id']) {
             $update = DB::table('company')
                     ->where('id', $data['id'])
                     ->update(['name' => $data['name'],
-                'adress' => $data['email'],
+                'adress' => $data['adress'],
                 'bulstat' => $data['bulstat'],
                 'contragent_type' => $data['contragent_type'],
                 'email' => $data['email'],
@@ -86,10 +86,9 @@ class CompanyModel extends Model {
     }
 
     public function record($id) {
-        $view = DB::table('company')->where('id', '=', $id)->select('*')->get();
-        return $view;
+        return DB::table('company')->where('id', '=', $id)->get();
     }
-    
+
     public function getContragentTypes() {
         $query = DB::table('company_type')->select('*')->get();
         return $query;

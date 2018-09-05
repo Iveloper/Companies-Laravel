@@ -27,10 +27,56 @@ class CompanyController extends Controller {
      * @return type
      */
     public function index(Request $request) {
+        
+        $this->model->with('persons');
+        
+        [
+            0 => [
+                id,
+                name,
+                persons => [
+                    0 => [
+                        id,
+                    firstname,
+                    egn
+                    ],
+                    1 => [
+                        id,
+                    firstname,
+                    egn
+                    ]
+                    
+                ]
+            ],
+            1 => [
+                id,
+                name,
+                persons => [
+                    0 => [
+                        id,
+                    firstname,
+                    egn
+                    ]
+                ]
+            ],
+            2 => [
+                id,
+                name,
+                persons => [
+                ]
+            ]
+            
+        ]
         $companies = $this->model->getCompanies($request);
         return view('/companies/list')->with('companies', $companies);
     }
 
+    /**
+     * TO DO: ....
+     * @param type $id
+     * @return type
+     * 
+     */
     public function show($id) {
         $view = $this->model->record($id);
         return view('companies/record', compact('view'));
