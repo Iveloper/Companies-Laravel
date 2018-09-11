@@ -1,32 +1,32 @@
 @extends('layouts.app')
 @section('content')
 
-<a href="{{ route('company_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">Add</button></a>
+<a href="{{ route('company_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></a>
 
 
 <form method='GET' class="form-horizontal" action='/company' style="margin-top: 10px; margin-bottom: 10px;">
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchCompany[name]" placeholder="Search by Name.." value="">
+        <input type="text" class="form-control" name="searchCompany[name]" placeholder="{{trans('company.searchByName')}}" value="">
     </div>
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchCompany[adress]" placeholder="Search by Adress.." value="">
+        <input type="text" class="form-control" name="searchCompany[adress]" placeholder="{{trans('company.searchByAddress')}}" value="">
     </div>
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchCompany[bulstat]" placeholder="Search by Bulstat.." value="">
+        <input type="text" class="form-control" name="searchCompany[bulstat]" placeholder="{{trans('company.searchByBulstat')}}" value="">
     </div>
     <div class="col-md-2">
-        <button type="submit" class="btn btn-info">Search</button>
+        <button type="submit" class="btn btn-info">{{trans('company.search')}}</button>
     </div>
 </form>
 
 <table class="table table-striped">
     <thead>
     <th><a href="/company?sort=id&order={{ $companies['order'] }}">ID</a></th>
-    <th><a href="/company?sort=name&order={{ $companies['order'] }}">Name</a></th>
-    <th><a href="/company?sort=adress&order={{ $companies['order'] }}">Adress</a></th>
-    <th><a href="/company?sort=bulstat&order={{ $companies['order'] }}">Bulstat</a></th>
-    <th><a href="/company?sort=contragent_type&order={{ $companies['order'] }}">Type of Contragent</a></th>
-    <th><a href="/company?sort=note&order={{ $companies['order'] }}">Note</a></th>
+    <th><a href="/company?sort=name&order={{ $companies['order'] }}">{{trans('company.name')}}</a></th>
+    <th><a href="/company?sort=adress&order={{ $companies['order'] }}">{{trans('company.adress')}}</a></th>
+    <th><a href="/company?sort=bulstat&order={{ $companies['order'] }}">{{trans('company.bulstat')}}</a></th>
+    <th><a href="/company?sort=contragent_type&order={{ $companies['order'] }}">{{trans('company.contragent_type')}}</a></th>
+    <th><a href="/company?sort=note&order={{ $companies['order'] }}">{{trans('company.note')}}</a></th>
     <th></th>
     <th></th>
     <th></th>
@@ -42,9 +42,9 @@
         <td>{{ $company->bulstat }}</td>
         <td>{{ $company->contragent_type }}</td>
         <td>{{ $company->note }}</td>
-        <td><a href="{{ route('company_show', $company->id) }}"><button type="submit" class="btn btn-info">Info</button></a></td>
-        <td><a href="{{ route('company_edit', $company->id) }}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
-        <td><a href="{{ route('company_delete', $company->id) }}"><button type="submit" class="btn btn-danger">Delete</button></a></td>
+        <td><a href="{{ route('company_show', $company->id) }}"><button type="submit" class="btn btn-info">{{trans('company.info')}}</button></a></td>
+        <td><a href="{{ route('company_edit', $company->id) }}"><button type="submit" class="btn btn-warning">{{trans('company.edit')}}</button></a></td>
+        <td><a href="{{ route('company_delete', $company->id) }}" onclick="return confirm('Are you sure you want to delete this company?')"><button type="submit" class="btn btn-danger">{{trans('company.delete')}}</button></a></td>
     </tr>
 
     @endforeach
@@ -66,7 +66,7 @@
         @endif
 
         @endforeach
-        <input type="submit" class="btn btn-info" style="margin-left: 2px;"></button>
+        <button><input type="submit" class="btn btn-info" style="margin-left: 2px;"></button>
     </select>
-    <div><h4>Total Rows: {{ $companies['companies']->total() }}</h4></div>
+    <div><h4>{{trans('company.totalRows')}} {{ $companies['companies']->total() }}</h4></div>
     @endsection

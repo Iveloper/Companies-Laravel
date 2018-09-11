@@ -5,12 +5,12 @@
 <table class="table table-striped">
     <thead>
     <th><a href="/company?sort=id&order=">ID</a></th>
-    <th><a href="/company?sort=name&order=>">Name</a></th>
-    <th><a href="/company?sort=adress&order=">Adress</a></th>
-    <th><a href="/company?sort=bulstat&order=">Bulstat</a></th>
-    <th><a href="/company?sort=email&order=">Email</a></th>
-    <th><a href="/company?sort=phone&order=">Phone</a></th>
-    <th><a href="/company?sort=note&order=">Note</a></th>
+    <th><a href="/company?sort=name&order=>">{{trans('company.name')}}</a></th>
+    <th><a href="/company?sort=adress&order=">{{trans('company.adress')}}</a></th>
+    <th><a href="/company?sort=bulstat&order=">{{trans('company.bulstat')}}</a></th>
+    <th><a href="/company?sort=email&order=">{{trans('company.email')}}</a></th>
+    <th><a href="/company?sort=phone&order=">{{trans('company.phone')}}</a></th>
+    <th><a href="/company?sort=note&order=">{{trans('company.note')}}</a></th>
 </thead>
 
 <tbody>
@@ -29,6 +29,6 @@
     @endforeach
 </tbody>
 </table>
-<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.goBack')}}</button></a>
 
 @endsection

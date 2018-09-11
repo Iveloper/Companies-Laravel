@@ -16,7 +16,8 @@ class Kernel extends HttpKernel {
     protected $middleware = [
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class
+        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\Locale::class,
     ];
 
     /**

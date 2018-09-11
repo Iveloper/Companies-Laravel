@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Http\Models\UserModel;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -12,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        view()->share('languageAll', UserModel::getLanguage());
     }
 
     /**

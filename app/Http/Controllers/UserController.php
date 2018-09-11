@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Models\UserModel;
 use App\Http\Requests\StoreUserPost;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use App\Http\Requests\StoreFilePost;
+
 
 class UserController extends Controller {
 
@@ -27,10 +28,17 @@ class UserController extends Controller {
     }
 
     public function create() {
-        return view('users/add');
+        $lang = $this->model->getLanguage();
+        return view('users/add', compact('lang'));
     }
 
     public function update($id, Request $request) {
+        if($request->all()['language_id'] == '2'){
+            session()->put('language', 'bg');
+        }
+        else{
+            session()->put('language', 'en');
+        }
         $this->model->updateUser($request->all());
         return redirect('/users');
     }
@@ -42,7 +50,8 @@ class UserController extends Controller {
 
     public function edit($id) {
         $edit = $this->model->record($id);
-        return view('/users/edit', compact('edit'));
+        $lang = $this->model->getLanguage();
+        return view('/users/edit', compact('edit', 'lang'));
     }
 
     public function activate($id) {
@@ -62,8 +71,7 @@ class UserController extends Controller {
         return view('/users/upload', compact('upload'));
     }
 
-    public function file($id, Request $request) {
-        //Storage::putFile(public_path() . '/uploads/avatars/' . Auth::user()->username,$request->file('avatar'));
+    public function file($id, Request $request, StoreFilePost $file) {
         $path = $this->model->getUserAvatarDirectory();
 
         if(!Storage::exists($path)) {
@@ -75,33 +83,6 @@ class UserController extends Controller {
             file_get_contents($request->file('avatar')->getRealPath())
         );
         
-
-//        var_dump(Storage::exists($path));
-//        echo '=<br>';
-//        die;
-//        
-//        if (!Storage::exists($path)) {
-//            Storage::makeDirectory($path);
-//        }
-//        
-//        var_dump($request->file('avatar')->getClientOriginalName());
-//        echo '=<br>';
-//        die;
-//        if ($request->hasFile('avatar')) {
-//            $request->file('avatar')->move($path, $request->file('avatar')->getClientOriginalName());
-//        $content = $request->file('avatar');
-
-//        Storage::disk('local')
-//                ->put(
-//            $request->file('avatar')->getClientOriginalName(),
-//            file_get_contents($request->file('avatar')->getRealPath())
-//        );
-
-//        $request->file('avatar')->move($path, $request->file('avatar')->getClientOriginalName());
-        
-//        Storage::disk('local')->put($request->file('avatar')->getClientOriginalName(), $content);
-
-//        Storage::disk('local')->put(\Auth::user()->username, $content);
         $this->model->uploadAvatar($id, $request);
         return redirect('/users');
     }

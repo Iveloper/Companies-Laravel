@@ -5,10 +5,10 @@
 <table class="table table-striped">
     <thead>
     <th><a href="/people?sort=id&order=">ID</a></th>
-    <th><a href="/people?sort=name&order=>">Name</a></th>
-    <th><a href="/people?sort=adress&order=">Adress</a></th>
-    <th><a href="/people?sort=phone&order=">Phone</a></th>
-    <th><a href="/people?sort=email&order=">Email</a></th>
+    <th><a href="/people?sort=name&order=>">{{trans('company.name')}}</a></th>
+    <th><a href="/people?sort=adress&order=">{{trans('company.adress')}}</a></th>
+    <th><a href="/people?sort=phone&order=">{{trans('company.phone')}}</a></th>
+    <th><a href="/people?sort=email&order=">{{trans('company.email')}}</a></th>
 </thead>
 
 <tbody>
@@ -26,5 +26,5 @@
     
 </tbody>
 </table>
-<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.goBack')}}</button></a>
 @endsection

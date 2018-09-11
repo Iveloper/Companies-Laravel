@@ -1,0 +1,15 @@
+SQL SERVER LOGIN:
+192.168.0.105
+username: sa
+pass: Energetic@2
+
+
+TOOLS>OPTIONS>DESIGNERS>TABLE DATABASE DESIGNE>PREVENT FROM CHANGES
+
+
+
+
+SELECT c.id, c.name, c.adress, c.phone, c.email, c.bulstat, ct.name AS contragent_type
+ FROM  company c
+ JOIN company_type ct ON ct.id = c.contragent_type
+ WHERE c.id = 11

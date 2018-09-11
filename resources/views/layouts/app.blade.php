@@ -51,20 +51,28 @@
                         @else
                         <ul class="nav navbar-nav">
 
-                            <li><a href="{{ url('/company') }}">Company</a></li>
-                            <li><a href="{{ url('/people') }}">People</a></li>
-                            <li><a href="{{ url('/users') }}">Users</a></li>
+                            <li><a href="{{ url('/company') }}">{{trans('company.companies')}}</a></li>
+                            <li><a href="{{ url('/people') }}">{{trans('company.people')}}</a></li>
+                            <li><a href="{{ url('/users') }}">{{trans('company.users')}}</a></li>
                         </ul>
                         <li class="dropdown" style="display: flex;">
+
                             <a href="{{ route('user_upload', Auth::user()->id) }}"><img src="{{ url('/') }}/uploads/avatars/{{ Auth::user()->username }}/{{ Auth::user()->avatar }}" style="width: 45px; max-height: 40px; border-radius: 89%;"></a>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->username }} <span class="caret"></span>
                             </a>
 
+
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                <li><a href="{{ route('user_edit', Auth::user()->id) }}"><i class="fa fa-btn fa-edit"></i>{{trans('company.edit_profile')}}</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{trans('company.logout')}}</a></li>
                             </ul>
+
                         </li>
+<!--                        <a href="{{ route('user_edit', Auth::user()->id) }}"><img src="{{ url('/') }}/uploads/flags/{{ Auth::user()->language_id }}.png" style="width: 45px; max-height: 40px; border-radius: 89%; margin-top: 14px; margin-left: 20px;"></a>-->
+                        @foreach ($languageAll as $language => $val)
+                        <a href="{{ route('change_language', $val->id) }}"><img src="{{ url('/') }}/uploads/flags/{{ $val->id }}.png" style="width: 25px; max-height: 22px; border-radius: 89%; margin: 16px;"></a>
+                        @endforeach
                         @endif
                     </ul>
                 </div>

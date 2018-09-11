@@ -1,35 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="{{ route('person_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">Add</button></a>
+<a href="{{ route('person_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></a>
 
 
 <form method='GET' class="form-horizontal" action='/people' style=" margin-top: 10px; margin-bottom: 10px;">
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchPerson[name]" placeholder="Search by Name.." value="">
+        <input type="text" class="form-control" name="searchPerson[name]" placeholder="{{trans('company.searchByName')}}" value="">
     </div>
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchPerson[adress]" placeholder="Search by Adress.." value="">
+        <input type="text" class="form-control" name="searchPerson[adress]" placeholder="{{trans('company.searchByAddress')}}" value="">
     </div>
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchPerson[phone]" placeholder="Search by Phone.." value="">
+        <input type="text" class="form-control" name="searchPerson[phone]" placeholder="{{trans('company.searchByPhone')}}" value="">
     </div>
     <div class="col-md-2">
-        <input type="text" class="form-control" name="searchPerson[email]" placeholder="Search by Email.." value="">
+        <input type="text" class="form-control" name="searchPerson[email]" placeholder="{{trans('company.searchByEmail')}}" value="">
     </div>
     <div class="col-md-2">
-        <button type="submit" class="btn btn-info">Search</button>
+        <button type="submit" class="btn btn-info">{{trans('company.search')}}</button>
     </div>
 </form>
 
 <table class="table table-striped">
     <thead>
     <th><a href="/people?sort=id&order={{ $persons['order'] }}">ID</a></th>
-    <th><a href="/people?sort=name&order={{ $persons['order'] }}">Name</a></th>
-    <th><a href="/people?sort=adress&order={{ $persons['order'] }}">Adress</a></th>
-    <th><a href="/people?sort=phone&order={{ $persons['order'] }}">Phone</a></th>
-    <th><a href="/people?sort=email&order={{ $persons['order'] }}">Email</a></th>
-    <th><a href="/people?sort=company&order={{ $persons['order'] }}">Company</a></th>
+    <th><a href="/people?sort=name&order={{ $persons['order'] }}">{{trans('company.name')}}</a></th>
+    <th><a href="/people?sort=adress&order={{ $persons['order'] }}">{{trans('company.adress')}}</a></th>
+    <th><a href="/people?sort=phone&order={{ $persons['order'] }}">{{trans('company.phone')}}</a></th>
+    <th><a href="/people?sort=email&order={{ $persons['order'] }}">{{trans('company.email')}}</a></th>
+    <th><a href="/people?sort=company&order={{ $persons['order'] }}">{{trans('company.company')}}</a></th>
 
     <th></th>
     <th></th>
@@ -46,9 +46,9 @@
         <td>{{ $company->phone }}</td>
         <td>{{ $company->email }}</td>
         <td>{{ $company->company }}</td>
-        <td><a href="{{ route('person_show', $company->id) }}"><button type="submit" class="btn btn-info">Info</button></a></td>
-        <td><a href="{{ route('person_edit', $company->id) }}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
-        <td><a href="{{ route('person_delete', $company->id) }}"><button type="submit" class="btn btn-danger">Delete</button></a></td>
+        <td><a href="{{ route('person_show', $company->id) }}"><button type="submit" class="btn btn-info">{{trans('company.info')}}</button></a></td>
+        <td><a href="{{ route('person_edit', $company->id) }}"><button type="submit" class="btn btn-warning">{{trans('company.edit')}}</button></a></td>
+        <td><a href="{{ route('person_delete', $company->id) }}" onclick="return confirm('Are you sure you want to delete this person?')"><button type="submit" class="btn btn-danger">{{trans('company.delete')}}</button></a></td>
     </tr>
 
     @endforeach
@@ -72,6 +72,6 @@
         @endforeach
         <input type="submit" class="btn btn-info" style="margin-left: 2px;"></button>
     </select>
-    <div><h4>Total Rows: {{ count($persons['total']) }}</h4></div>
+    <div><h4>{{trans('company.totalRows')}} {{ count($persons['total']) }}</h4></div>
     @endsection
 

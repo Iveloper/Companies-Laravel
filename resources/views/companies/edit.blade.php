@@ -14,27 +14,27 @@
 {{ Form::hidden('id', $edit[0]->id) }}
 <div class='form' style='text-align: center'>
     <div class="form-group row">
-        {!! Form::label('name', 'Name') !!}<br>
+        <label for="name">{{trans('company.name')}}</label><br>
         {!! Form::text('name', $edit[0]->name, array('class'=>"form-control")) !!}
     </div>
 
     <div class="form-group row">
-        {!! Form::label('email', 'E-Mail Address') !!}<br>
+        <label for="email">{{trans('company.email')}}</label><br>
         {!! Form::text('email', $edit[0]->email, array('class'=>"form-control")) !!}
     </div>
 
     <div class="form-group row">
-        {!! Form::label('bulstat', 'Bulstat') !!}<br>
+        <label for="bulstat">{{trans('company.bulstat')}}</label><br>
         {!! Form::text('bulstat', $edit[0]->bulstat, array('class'=>"form-control")) !!}
     </div>
 
     <div class="form-group row">
-        {!! Form::label('adress', 'Adress') !!}<br>
+        <label for="address">{{trans('company.adress')}}</label><br>
         {!! Form::text('adress', $edit[0]->adress, array('class'=>"form-control")) !!}
     </div>
 
     <div class="form-group row">
-        {!! Form::label('contragent_type', 'Type of contragent') !!}<br>
+        <label for="contragent_type">{{trans('company.contragent_type')}}</label><br>
         <select name="contragent_type">
             @foreach ($getTypes as $contragentType => $val)
             @if ($edit[0]->contragent_type == $val->id)
@@ -47,7 +47,7 @@
     </div>
 
     <div class="form-group row">
-        {!! Form::label('phone', 'Phone') !!}<br>
+        <label for="phone">{{trans('company.phone')}}</label><br>
         {!! Form::text('phone', $edit[0]->phone, array('class'=>"form-control")) !!}
         {!! Form::submit('Submit', array('class' => 'btn btn-success', 'style' => 'width: 100%; margin-top: 5px;')) !!}
     </div>
@@ -55,5 +55,5 @@
 
 </div>
 {!! Form::close() !!}
-<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">Go Back</button></a>
+<a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.goBack')}}</button></a>
 @endsection

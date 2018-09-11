@@ -31,12 +31,6 @@ class CompanyController extends Controller {
         return view('/companies/list')->with('companies', $companies);
     }
 
-    /**
-     * TO DO: ....
-     * @param type $id
-     * @return type
-     * 
-     */
     public function show($id) {
         $view = $this->model->record($id);
         return view('companies/record', compact('view'));

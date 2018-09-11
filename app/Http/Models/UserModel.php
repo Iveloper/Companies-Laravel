@@ -11,6 +11,7 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserModel extends Model {
 
@@ -62,7 +63,7 @@ class UserModel extends Model {
         $data = request()->except(['_token']);
         $data['password'] = bcrypt($data['password']);
         $insert = DB::table('users')->insert([
-            ['email' => $data['email'], 'username' => $data['username'], 'password' => $data['password'], 'active' => $data['active']]
+            ['email' => $data['email'], 'username' => $data['username'], 'password' => $data['password'], 'active' => $data['active'], 'language_id' => $data['language_id']]
         ]);
         Controller::FlashMessages('The user has been added', 'success');
         return $insert;
@@ -74,7 +75,8 @@ class UserModel extends Model {
                     ->where('id', $data['id'])
                     ->update(['username' => $data['username'],
                 'email' => $data['email'],
-                'active' => $data['active']
+                'active' => $data['active'],
+                'language_id' => $data['language_id']
             ]);
             Controller::FlashMessages('The user has been updated', 'success');
             return $update;
@@ -82,7 +84,7 @@ class UserModel extends Model {
     }
 
     public function record($id) {
-        $view = DB::table('users')->where('id', '=', $id)->select('id', 'email', 'username', 'active')->get();
+        $view = DB::table('users')->where('id', '=', $id)->select('id', 'email', 'username', 'active', 'language_id')->get();
         return $view;
     }
 
@@ -111,5 +113,20 @@ class UserModel extends Model {
 
     public function getUserAvatarDirectory() {
         return '/uploads/avatars/' . \Auth::user()->username;
+    }
+    
+    public static function getLanguage() {
+        $query = DB::table('languages')
+                ->select('*')
+                ->where('active', '=', '1')
+                ->get();
+        return $query;
+    }
+    
+    public function getUserPreferredLanguage(){
+        $query = DB::table('users')
+                ->select('language_id')
+                ->where('id', '=', Auth::user()->id);
+        return $query;
     }
 }
