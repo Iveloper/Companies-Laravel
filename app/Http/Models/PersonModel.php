@@ -20,6 +20,7 @@ class PersonModel extends Model {
     public $page = 1;
     public $perPage = 5;
 
+    //TO DO: add commments ...
     public function getPersons($request){
         
          $query = DB::table('Person')
@@ -27,6 +28,7 @@ class PersonModel extends Model {
                  ->select('Person.*', 'company.name AS company');
 
         if ($request->get('searchPerson')) {
+            //TO DO: foreach ...
             $query->where([
                 ['name', 'LIKE', '%' . $request->get('searchPerson')['name'] . '%'],
                 ['adress', 'LIKE', '%' . $request->get('searchPerson')['adress'] . '%'],
@@ -60,6 +62,7 @@ class PersonModel extends Model {
         ];
     }
     
+    //TO DO: add commments ...
     public function addPerson($data) {
             $data = request()->except(['_token']);
             $insert = DB::table('Person')->insert($data);
@@ -67,6 +70,7 @@ class PersonModel extends Model {
             return $insert;
     }
     
+    //TO DO: add commments ...
     public function updatePerson($data) {
         if (isset($data['id']) && $data['id']) {
             $update = DB::table('Person')
@@ -79,13 +83,18 @@ class PersonModel extends Model {
             Controller::FlashMessages('The person has been updated', 'success');
             return $update;
         }
+        
+        //TO DO: What if $data['id'] is not isset? ...
     }
     
+    //TO DO: add commments ...
     public function record($id) {
+        //TO DO: set $view and return $view ...
         $view = DB::table('Person')->where('id', '=', $id)->select('*')->get();
         return $view;
     }
     
+    //TO DO: add commments ...
     public function deletePerson($id) {
         $delete = DB::table('Person')->where('id', '=', $id)->delete();
         Controller::FlashMessages('The person has been deleted', 'danger');

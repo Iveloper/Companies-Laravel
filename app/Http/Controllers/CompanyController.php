@@ -31,34 +31,41 @@ class CompanyController extends Controller {
         return view('/companies/list')->with('companies', $companies);
     }
 
+    //TO DO: add commments ...
     public function show($id) {
+        //TO DO: show contragent type - client, supplier, other ...
         $view = $this->model->record($id);
         return view('companies/record', compact('view'));
     }
 
+    //TO DO: add commments ...
     public function create() {
         $getTypes = $this->model->getContragentTypes();
         return view('companies/add', compact('getTypes'));
     }
 
+    //TO DO: add commments ...
     public function update($id, Request $request, StoreCompanyPost $company) {
         $update = $this->model->updateCompany($request->all());
         //check $add 
         return redirect('/company');
     }
 
+    //TO DO: add commments ...
     public function store(Request $request, StoreCompanyPost $company) {
         $add = $this->model->addCompany($request->all());
 
         return redirect('/company');
     }
 
+    //TO DO: add commments ...
     public function edit($id) {
         $edit = $this->model->record($id);
         $getTypes = $this->model->getContragentTypes();
         return view('/companies/edit', compact('edit', 'getTypes'));
     }
 
+    //TO DO: add commments ...
     public function delete($id) {
         $delete = $this->model->deleteCompany($id);
         return redirect('/company');

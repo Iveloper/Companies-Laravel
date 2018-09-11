@@ -22,6 +22,7 @@ class UserModel extends Model {
     public $page = 1;
     public $perPage = 5;
 
+    //TO DO: add commments ...
     public function getUsers($request) {
 
         $query = DB::table('users');
@@ -58,10 +59,12 @@ class UserModel extends Model {
         ];
     }
 
+    //TO DO: add commments ...
     public function addUser($data) {
 
         $data = request()->except(['_token']);
         $data['password'] = bcrypt($data['password']);
+        //TO DO: new line ...
         $insert = DB::table('users')->insert([
             ['email' => $data['email'], 'username' => $data['username'], 'password' => $data['password'], 'active' => $data['active'], 'language_id' => $data['language_id']]
         ]);
@@ -69,6 +72,7 @@ class UserModel extends Model {
         return $insert;
     }
 
+    //TO DO: add commments ...
     public function updateUser($data) {
         if (isset($data['id']) && $data['id']) {
             $update = DB::table('users')
@@ -83,11 +87,14 @@ class UserModel extends Model {
         }
     }
 
+    //TO DO: add commments ...
     public function record($id) {
+        //TO DO: $view
         $view = DB::table('users')->where('id', '=', $id)->select('id', 'email', 'username', 'active', 'language_id')->get();
         return $view;
     }
 
+    //TO DO: add commments ...
     public function uploadAvatar($id, $data) {
 
         $fileName = $data->file('avatar')->getClientOriginalName();
@@ -99,22 +106,26 @@ class UserModel extends Model {
         return $update;
     }
 
+    //TO DO: add commments ...
     public function activateUser($id) {
         $query = DB::table('users')->where('id', $id)->update(['active' => 1]);
         Controller::FlashMessages('The user has been activated', 'success');
         return $query;
     }
 
+    //TO DO: add commments ...
     public function deactivateUser($id) {
         $query = DB::table('users')->where('id', $id)->update(['active' => 0]);
         Controller::FlashMessages('The user has been deactivated', 'danger');
         return $query;
     }
 
+    //TO DO: add commments ...
     public function getUserAvatarDirectory() {
         return '/uploads/avatars/' . \Auth::user()->username;
     }
     
+    //TO DO: add commments ...
     public static function getLanguage() {
         $query = DB::table('languages')
                 ->select('*')
@@ -123,7 +134,9 @@ class UserModel extends Model {
         return $query;
     }
     
+    //TO DO: add commments ...
     public function getUserPreferredLanguage(){
+        //TO DO: $query
         $query = DB::table('users')
                 ->select('language_id')
                 ->where('id', '=', Auth::user()->id);

@@ -12,6 +12,7 @@ class LanguageController extends Controller {
         return back()->withInput();
     }
 
+    //TO DO: ...
     public function toggle($id) {
         if ($id == '2') {
             return 'bg';

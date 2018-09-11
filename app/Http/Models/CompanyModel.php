@@ -22,6 +22,7 @@ class CompanyModel extends Model {
                 ->leftJoin('company_type', 'company.contragent_type', '=', 'company_type.id')
                 ->select('company.id', 'company.name', 'adress', 'bulstat', 'phone', 'email', 'note', 'company_type.name as contragent_type');
         if ($request->get('searchCompany')) {
+            //TO DO: foreach ...
             $query->where([
                 ['name', 'LIKE', '%' . $request->get('searchCompany')['name'] . '%'],
                 ['adress', 'LIKE', '%' . $request->get('searchCompany')['adress'] . '%'],
@@ -90,6 +91,7 @@ class CompanyModel extends Model {
     }
 
     public function getContragentTypes() {
+        //TO DO: $query and return $query ...
         $query = DB::table('company_type')->select('*')->get();
         return $query;
     }
