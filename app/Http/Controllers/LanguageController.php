@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
-use App\Http\Models\LanguageModel;
+use App\Models\LanguageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class LanguageController extends Controller {

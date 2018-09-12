@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Models\PersonModel;
+use App\Models\PersonModel;
 use Illuminate\Http\Request;
-use App\Http\Models\CompanyModel;
+use App\Models\CompanyModel;
 use App\Http\Requests\StorePersonPost;
 
 use App\Http\Controllers\Controller;

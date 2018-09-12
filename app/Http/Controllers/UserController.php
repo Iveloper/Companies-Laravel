@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Models\UserModel;
+use App\Models\User;
 use App\Http\Requests\StoreUserPost;
 use App\Http\Requests\StoreFilePost;
 
@@ -12,7 +12,7 @@ class UserController extends Controller {
 
     public $model;
 
-    public function __construct(UserModel $model) {
+    public function __construct(User $model) {
         $this->model = $model;
     }
 

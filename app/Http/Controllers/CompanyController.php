@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\CompanyModel;
+use App\Models\CompanyModel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCompanyPost;
 
@@ -21,6 +21,7 @@ class CompanyController extends Controller {
     }
 
     public function index(Request $request) {
+        $this->authorize('company');
         $companies = $this->model->getCompanies($request);
         return view('/companies/list')->with('companies', $companies);
     }
@@ -33,12 +34,15 @@ class CompanyController extends Controller {
 
     //Function that returns the form for adding new Company.
     public function create() {
+        $this->authorize('company_create');
+        
         $getTypes = $this->model->getContragentTypes();
         return view('companies/add', compact('getTypes'));
     }
 
     //This function calls the model and updates the information about specific company
     public function update(Request $request, StoreCompanyPost $company) {
+       
         $update = $this->model->updateCompany($request->all());
         //check $add 
         return redirect('/company');
@@ -52,6 +56,7 @@ class CompanyController extends Controller {
 
     //Function which returns the form for editing a specific company
     public function edit($id) {
+        $this->authorize('company_edit');
         $edit = $this->model->record($id);
         $getTypes = $this->model->getContragentTypes();
         return view('/companies/edit', compact('edit', 'getTypes'));
@@ -59,6 +64,7 @@ class CompanyController extends Controller {
 
     //This function deletes a certain company
     public function delete($id) {
+        $this->authorize('company_delete');
         $delete = $this->model->deleteCompany($id);
         return redirect('/company');
     }

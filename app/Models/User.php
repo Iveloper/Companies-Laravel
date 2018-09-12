@@ -6,15 +6,16 @@
  * and open the template in the editor.
  */
 
-namespace App\Http\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Role;
 
-class UserModel extends Model {
+class User extends Model {
 
     protected $table = 'users';
     public $timestamps = false;
@@ -22,6 +23,14 @@ class UserModel extends Model {
     public $sort;
     public $page = 1;
     public $perPage = 5;
+
+    public function hasRole($permission) {
+        return !!$this->roles->intersect($permission->roles)->count();
+    }
+
+    public function roles() {
+        return $this->belongsToMany(Role::class);
+    }
 
     //Shows a list of all the users from database.
     public function getUsers($request) {
