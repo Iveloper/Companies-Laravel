@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\URL;
 use App\Http\Models\CompanyModel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCompanyPost;
@@ -21,51 +20,44 @@ class CompanyController extends Controller {
         $this->model = $model;
     }
 
-    /**
-     * Return companies ...
-     * @param Request $request
-     * @return type
-     */
     public function index(Request $request) {
         $companies = $this->model->getCompanies($request);
         return view('/companies/list')->with('companies', $companies);
     }
 
-    //TO DO: add commments ...
+    //Returns the view with full information about the company
     public function show($id) {
-        //TO DO: show contragent type - client, supplier, other ...
         $view = $this->model->record($id);
         return view('companies/record', compact('view'));
     }
 
-    //TO DO: add commments ...
+    //Function that returns the form for adding new Company.
     public function create() {
         $getTypes = $this->model->getContragentTypes();
         return view('companies/add', compact('getTypes'));
     }
 
-    //TO DO: add commments ...
-    public function update($id, Request $request, StoreCompanyPost $company) {
+    //This function calls the model and updates the information about specific company
+    public function update(Request $request, StoreCompanyPost $company) {
         $update = $this->model->updateCompany($request->all());
         //check $add 
         return redirect('/company');
     }
 
-    //TO DO: add commments ...
+    //Function for storing new company in the database
     public function store(Request $request, StoreCompanyPost $company) {
         $add = $this->model->addCompany($request->all());
-
         return redirect('/company');
     }
 
-    //TO DO: add commments ...
+    //Function which returns the form for editing a specific company
     public function edit($id) {
         $edit = $this->model->record($id);
         $getTypes = $this->model->getContragentTypes();
         return view('/companies/edit', compact('edit', 'getTypes'));
     }
 
-    //TO DO: add commments ...
+    //This function deletes a certain company
     public function delete($id) {
         $delete = $this->model->deleteCompany($id);
         return redirect('/company');

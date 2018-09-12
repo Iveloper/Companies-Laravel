@@ -4,13 +4,14 @@
 
 <table class="table table-striped">
     <thead>
-    <th><a href="/company?sort=id&order=">ID</a></th>
-    <th><a href="/company?sort=name&order=>">{{trans('company.name')}}</a></th>
-    <th><a href="/company?sort=adress&order=">{{trans('company.adress')}}</a></th>
-    <th><a href="/company?sort=bulstat&order=">{{trans('company.bulstat')}}</a></th>
-    <th><a href="/company?sort=email&order=">{{trans('company.email')}}</a></th>
-    <th><a href="/company?sort=phone&order=">{{trans('company.phone')}}</a></th>
-    <th><a href="/company?sort=note&order=">{{trans('company.note')}}</a></th>
+    <th>ID</th>
+    <th>{{trans('company.name')}}</th>
+    <th>{{trans('company.adress')}}</th>
+    <th>{{trans('company.bulstat')}}</th>
+    <th>{{trans('company.email')}}</th>
+    <th>{{trans('company.phone')}}</th>
+    <th>{{trans('company.contragent_type')}}</th>
+    <th>{{trans('company.note')}}</th>
 </thead>
 
 <tbody>
@@ -22,7 +23,9 @@
             <td>{{ $record->adress }}</td>
             <td>{{ $record->bulstat }}</td>
             <td>{{ $record->email }}</td>
+            <td>{{ $record->contragent_type }}</td>
             <td>{{ $record->phone }}</td>
+            
             <td>{{ $record->note }}</td>
         </tr>
         

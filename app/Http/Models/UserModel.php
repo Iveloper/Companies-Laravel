@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserModel extends Model {
 
@@ -22,9 +23,8 @@ class UserModel extends Model {
     public $page = 1;
     public $perPage = 5;
 
-    //TO DO: add commments ...
+    //Shows a list of all the users from database.
     public function getUsers($request) {
-
         $query = DB::table('users');
 
         if ($request->get('searchUser')) {
@@ -34,7 +34,6 @@ class UserModel extends Model {
         }
 
         $sortParam = $request->get('sort', 'id');
-        //$sort = $query->orderBy($sortParam, $this->order)->get();
         if ($request->get('sort')) {
             if ($request->get('order') && $request->get('order') == 'ASC') {
                 $this->order = 'DESC';
@@ -59,87 +58,97 @@ class UserModel extends Model {
         ];
     }
 
-    //TO DO: add commments ...
+    //Adds new user with bcrypt hashed password to the database.
     public function addUser($data) {
 
         $data = request()->except(['_token']);
-        $data['password'] = bcrypt($data['password']);
-        //TO DO: new line ...
-        $insert = DB::table('users')->insert([
-            ['email' => $data['email'], 'username' => $data['username'], 'password' => $data['password'], 'active' => $data['active'], 'language_id' => $data['language_id']]
-        ]);
         Controller::FlashMessages('The user has been added', 'success');
-        return $insert;
-    }
-
-    //TO DO: add commments ...
-    public function updateUser($data) {
-        if (isset($data['id']) && $data['id']) {
-            $update = DB::table('users')
-                    ->where('id', $data['id'])
-                    ->update(['username' => $data['username'],
-                'email' => $data['email'],
+        return $insert = DB::table('users')->insert([
+            ['email' => $data['email'],
+                'username' => $data['username'],
+                'password' => bcrypt($data['password']),
                 'active' => $data['active'],
-                'language_id' => $data['language_id']
-            ]);
-            Controller::FlashMessages('The user has been updated', 'success');
-            return $update;
-        }
-    }
-
-    //TO DO: add commments ...
-    public function record($id) {
-        //TO DO: $view
-        $view = DB::table('users')->where('id', '=', $id)->select('id', 'email', 'username', 'active', 'language_id')->get();
-        return $view;
-    }
-
-    //TO DO: add commments ...
-    public function uploadAvatar($id, $data) {
-
-        $fileName = $data->file('avatar')->getClientOriginalName();
-        $update = DB::table('users')
-                ->where('id', $id)
-                ->update(['avatar' => $fileName
+                'language_id' => $data['language_id']]
         ]);
+    }
+
+    //Updates the information about a specific user.
+    public function updateUser($data) {
+
+        Controller::FlashMessages('The user has been updated', 'success');
+        return DB::table('users')
+                        ->where('id', $data['id'])
+                        ->update(['username' => $data['username'],
+                            'email' => $data['email'],
+                            'active' => $data['active'],
+                            'language_id' => $data['language_id']
+        ]);
+    }
+
+    //Shows every piece of information about an user by given id.
+    public function record($id) {
+        return DB::table('users')
+                        ->where('id', '=', $id)
+                        ->select('id', 'email', 'username', 'active', 'language_id')
+                        ->get();
+    }
+
+    //Makes a new directory named after the user's username and stores all of his avatars there.
+    public function uploadAvatar($id, $data) {
+        $path = $this->getUserAvatarDirectory();
+
+        if (!Storage::exists($path)) {
+            Storage::makeDirectory($path);
+        }
+        Storage::put(
+                $path . DIRECTORY_SEPARATOR . $data->file('avatar')->getClientOriginalName(), file_get_contents($data->file('avatar')->getRealPath())
+        );
+        $fileName = $data->file('avatar')->getClientOriginalName();
+
         Controller::FlashMessages('The avatar has been uploaded', 'success');
-        return $update;
+
+        return DB::table('users')
+                        ->where('id', $id)
+                        ->update(['avatar' => $fileName
+        ]);
     }
 
-    //TO DO: add commments ...
+    //Activates an user.
     public function activateUser($id) {
-        $query = DB::table('users')->where('id', $id)->update(['active' => 1]);
         Controller::FlashMessages('The user has been activated', 'success');
-        return $query;
+
+        return DB::table('users')
+                        ->where('id', $id)
+                        ->update(['active' => 1]);
     }
 
-    //TO DO: add commments ...
+    //Deactivates an user.
     public function deactivateUser($id) {
-        $query = DB::table('users')->where('id', $id)->update(['active' => 0]);
         Controller::FlashMessages('The user has been deactivated', 'danger');
-        return $query;
+
+        return DB::table('users')
+                        ->where('id', $id)
+                        ->update(['active' => 0]);
     }
 
-    //TO DO: add commments ...
+    //Returns the main directory where all the avatars will be stored.
     public function getUserAvatarDirectory() {
         return '/uploads/avatars/' . \Auth::user()->username;
     }
-    
-    //TO DO: add commments ...
+
+    //Selects all active languages from the database
     public static function getLanguage() {
-        $query = DB::table('languages')
-                ->select('*')
-                ->where('active', '=', '1')
-                ->get();
-        return $query;
+        return DB::table('languages')
+                        ->select('*')
+                        ->where('active', '=', '1')
+                        ->get();
     }
-    
-    //TO DO: add commments ...
-    public function getUserPreferredLanguage(){
-        //TO DO: $query
-        $query = DB::table('users')
-                ->select('language_id')
-                ->where('id', '=', Auth::user()->id);
-        return $query;
+
+    //Selects the preferred language for the user logged in our system.
+    public function getUserPreferredLanguage() {
+        return DB::table('users')
+                        ->select('language_id')
+                        ->where('id', '=', Auth::user()->id);
     }
+
 }

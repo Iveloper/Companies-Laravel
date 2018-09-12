@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+@if(Session::has('message'))
+<p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+@endif
+
 <a href="{{ route('user_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></button></a>
 
 <form method='GET' class="form-horizontal" action='/users' style="margin-top: 10px; margin-bottom: 10px;">

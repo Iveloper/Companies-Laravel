@@ -4,15 +4,16 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Http\Models\UserModel;
-class AppServiceProvider extends ServiceProvider
-{
+use App\Http\Models\LanguageModel;
+
+class AppServiceProvider extends ServiceProvider {
+
     /**
      * Bootstrap any application services.
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         view()->share('languageAll', UserModel::getLanguage());
     }
 
@@ -21,8 +22,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         //
     }
+
 }

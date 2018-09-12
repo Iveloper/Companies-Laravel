@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
-
+@if(Session::has('message'))
+<p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+@endif
 <a href="{{ route('company_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></a>
 
 

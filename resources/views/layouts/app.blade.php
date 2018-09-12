@@ -49,6 +49,7 @@
                         @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         @else
+                        
                         <ul class="nav navbar-nav">
 
                             <li><a href="{{ url('/company') }}">{{trans('company.companies')}}</a></li>
@@ -67,7 +68,6 @@
                                 <li><a href="{{ route('user_edit', Auth::user()->id) }}"><i class="fa fa-btn fa-edit"></i>{{trans('company.edit_profile')}}</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{trans('company.logout')}}</a></li>
                             </ul>
-
                         </li>
 <!--                        <a href="{{ route('user_edit', Auth::user()->id) }}"><img src="{{ url('/') }}/uploads/flags/{{ Auth::user()->language_id }}.png" style="width: 45px; max-height: 40px; border-radius: 89%; margin-top: 14px; margin-left: 20px;"></a>-->
                         @foreach ($languageAll as $language => $val)

@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
-
+use App\Http\Models\LanguageModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 class LanguageController extends Controller {
+    
+    public $model;
 
+    public function __construct(LanguageModel $model) {
+        $this->model = $model;
+    }
+    
+    //This function changes the locale language based on the user's preferred language.
     public function change($id) {
-        session()->put('language', $this->toggle($id));
-        return back()->withInput();
-    }
+        $this->model->changeLanguage($id);
+        $getKey = $this->model->joinUserLanguage();
 
-    //TO DO: ...
-    public function toggle($id) {
-        if ($id == '2') {
-            return 'bg';
-        }
-        return 'en';
-    }
+            session()->put('language', $getKey);
+            return back()->withInput();
 
+    }
 }

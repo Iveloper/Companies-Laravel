@@ -1,12 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Http\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Http\Controllers\Controller;
@@ -20,25 +15,22 @@ class PersonModel extends Model {
     public $page = 1;
     public $perPage = 5;
 
-    //TO DO: add commments ...
-    public function getPersons($request){
-        
-         $query = DB::table('Person')
-                 ->leftJoin('company', 'company.id', '=', 'Person.company_id')
-                 ->select('Person.*', 'company.name AS company');
+    //This function returns the list with all records from person database.
+    //It also does all the sorting, ordering and searching queries.
+    public function getPersons($request) {
+
+        $query = DB::table('Person')
+                ->leftJoin('company', 'company.id', '=', 'Person.company_id')
+                ->select('Person.*', 'company.name AS company');
 
         if ($request->get('searchPerson')) {
-            //TO DO: foreach ...
-            $query->where([
-                ['name', 'LIKE', '%' . $request->get('searchPerson')['name'] . '%'],
-                ['adress', 'LIKE', '%' . $request->get('searchPerson')['adress'] . '%'],
-                ['phone', 'LIKE', '%' . $request->get('searchPerson')['phone'] . '%'],
-                ['email', 'LIKE', '%' . $request->get('searchPerson')['email'] . '%']
-            ]);
+            foreach ($request->get('searchPerson') as $key => $value) {
+                $query->where([
+                    ['Person.' . $key, 'LIKE', '%' . $value . '%']
+                ]);
+            }
         }
-
         $sortParam = $request->get('sort', 'id');
-        //$sort = $query->orderBy($sortParam, $this->order)->get();
         if ($request->get('sort')) {
             if ($request->get('order') && $request->get('order') == 'ASC') {
                 $this->order = 'DESC';
@@ -61,44 +53,40 @@ class PersonModel extends Model {
             'total' => $totalRows
         ];
     }
-    
-    //TO DO: add commments ...
+
+    //Function that adds new person to the database.
     public function addPerson($data) {
-            $data = request()->except(['_token']);
-            $insert = DB::table('Person')->insert($data);
-            Controller::FlashMessages('The person has been inserted', 'success');
-            return $insert;
+        $data = request()->except(['_token']);
+        Controller::FlashMessages('The person has been inserted', 'success');
+        return DB::table('Person')->insert($data);
     }
-    
-    //TO DO: add commments ...
+
+    //Does all the updating for a specific person's information.
     public function updatePerson($data) {
-        if (isset($data['id']) && $data['id']) {
-            $update = DB::table('Person')
+            Controller::FlashMessages('The person has been updated', 'success');
+            
+            return DB::table('Person')
                     ->where('id', $data['id'])
                     ->update(['name' => $data['name'],
                 'adress' => $data['adress'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
             ]);
-            Controller::FlashMessages('The person has been updated', 'success');
-            return $update;
-        }
-        
-        //TO DO: What if $data['id'] is not isset? ...
     }
-    
-    //TO DO: add commments ...
+
+    //Selects all the information for a concrete row from Person table.
     public function record($id) {
-        //TO DO: set $view and return $view ...
-        $view = DB::table('Person')->where('id', '=', $id)->select('*')->get();
-        return $view;
+        return DB::table('Person')
+                ->where('id', '=', $id)
+                ->select('*')->get();     
     }
-    
-    //TO DO: add commments ...
-    public function deletePerson($id) {
-        $delete = DB::table('Person')->where('id', '=', $id)->delete();
+
+    //Deletes a person by given ID.
+    public function deletePerson($id) {  
         Controller::FlashMessages('The person has been deleted', 'danger');
-        return $delete;
+        return DB::table('Person')
+                ->where('id', '=', $id)
+                ->delete();
     }
-    
+
 }

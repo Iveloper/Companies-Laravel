@@ -1,40 +1,5 @@
 <?php
 
-/*
-  |--------------------------------------------------------------------------
-  | Routes File
-  |--------------------------------------------------------------------------
-  |
-  | Here is where you will register all of the routes in an application.
-  | It's a breeze. Simply tell Laravel the URIs it should respond to
-  | and give it the controller to call when that URI is requested.
-  |
- */
-//
-//Route::get('/user', function () {
-//    return view('welcome',['username'=>'ivelin']);
-//});
-
-
-
-/*
-  |--------------------------------------------------------------------------
-  | Application Routes
-  |--------------------------------------------------------------------------
-  |
-  | This route group applies the "web" middleware group to every route
-  | it contains. The "web" middleware group is defined in your HTTP
-  | kernel and includes session state, CSRF protection, and more.
-  |
- */
-//
-//Route::group(['middlewareGroups' => ['web']], function () {
-//    
-//    Route::get('/', 'UserController@index');
-//    Route::get('/register', 'UserController@register_form');
-//    Route::post('/register', 'UserController@register');
-//});
-
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 
 Route::post('/auth', 'HomeController@auth');
@@ -63,7 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/', ['as' => 'person_store', 'uses' => 'PersonController@store']);
 
         Route::get('/show/{id}', ['as' => 'person_show', 'uses' => 'PersonController@show']);
-        Route::get('/delete/{id}', ['as' => 'person_delete', 'uses' => 'CompanyController@delete']);
+        Route::get('/delete/{id}', ['as' => 'person_delete', 'uses' => 'PersonController@delete']);
     });
 
     Route::group(['prefix' => 'users'], function() {
