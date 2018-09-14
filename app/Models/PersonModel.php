@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Http\Controllers\Controller;
 
 class PersonModel extends Model {
 
@@ -56,15 +55,12 @@ class PersonModel extends Model {
 
     //Function that adds new person to the database.
     public function addPerson($data) {
-        $data = request()->except(['_token']);
-        Controller::FlashMessages('The person has been inserted', 'success');
+        $data = request()->except(['_token']);      
         return DB::table('Person')->insert($data);
     }
 
     //Does all the updating for a specific person's information.
-    public function updatePerson($data) {
-            Controller::FlashMessages('The person has been updated', 'success');
-            
+    public function updatePerson($data) {     
             return DB::table('Person')
                     ->where('id', $data['id'])
                     ->update(['name' => $data['name'],
@@ -77,13 +73,13 @@ class PersonModel extends Model {
     //Selects all the information for a concrete row from Person table.
     public function record($id) {
         return DB::table('Person')
-                ->where('id', '=', $id)
-                ->select('*')->get();     
+                ->leftJoin('company', 'company.id', '=', 'Person.company_id')
+                ->where('Person.id', '=', $id)
+                ->select('Person.*', 'company.name AS company')->get();     
     }
 
     //Deletes a person by given ID.
     public function deletePerson($id) {  
-        Controller::FlashMessages('The person has been deleted', 'danger');
         return DB::table('Person')
                 ->where('id', '=', $id)
                 ->delete();

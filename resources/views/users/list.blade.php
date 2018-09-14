@@ -5,9 +5,9 @@
 @if(Session::has('message'))
 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
 @endif
-
+@can('create', $model)
 <a href="{{ route('user_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></button></a>
-
+@endcan
 <form method='GET' class="form-horizontal" action='/users' style="margin-top: 10px; margin-bottom: 10px;">
     <div class="col-md-2">
         <input type="text" class="form-control" name="searchUser[username]" placeholder="{{trans('company.searchByUsername')}}" value="">
@@ -22,7 +22,10 @@
     <th>{{trans('company.avatar')}}</th>
     <th><a href="/users?sort=username&order={{ $users['order'] }}">{{trans('company.username')}}</a></th>
     <th><a href="/users?sort=email&order={{ $users['order'] }}">{{trans('company.email')}}</a></th>
+    <th><a href="/users?sort=role&order={{ $users['order'] }}">{{trans('company.role')}}</a></th>
+    @can('activate', $model)
     <th><a href="/users?sort=active&order={{ $users['order'] }}">{{trans('company.active')}}</a></th>
+    @endcan
     <th></th>
     <th></th>
 </thead>
@@ -34,18 +37,26 @@
         <td><img src="{{ url('/') }}/uploads/avatars/{{$user->username}}/{{ $user->avatar }}" style="width: 45px; max-height: 40px; border-radius: 89%;"></td>
         <td>{{ $user->username }}</td>
         <td>{{ $user->email }}</td>
+        <td>{{ $user->role }}</td>
         <td>
             @if ($user->active == 1)
-            <div id="active">        
+            <div id="active"> 
+                @can('deactivate', $model)
                 <a href="{{ route('user_deactivate', $user->id) }}" onclick="return confirm('Are you sure you want to deactivate this user?')"><i class="fa fa-check-circle"></i></a>
+                @endcan
             </div>
             @else
+            @can('activate', $model)
             <a href="{{ route('user_activate', $user->id) }}" onclick="return confirm('Are you sure you want to activate this user?')"><i class="fa fa-circle"></i></a>
-                
+            @endcan    
             @endif
         </td>
+        @can('edit', $model)
         <td><a href="{{ route('user_edit', $user->id) }}"><button type="submit" class="btn btn-warning">{{trans('company.edit')}}</button></a></td>
+        @endcan
+        @can('upload', $model)
         <td><a href="{{ route('user_upload', $user->id) }}"><button type="submit" class="btn btn-info">{{trans('company.upload_avatar')}}</button></a></td>
+        @endcan
     </tr>
 
     @endforeach

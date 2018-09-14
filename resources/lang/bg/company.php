@@ -34,6 +34,9 @@ return [
     'edit_profile' => 'Редактирай профил',
     'users' => 'Потребители',
     'companies' => 'Компании',
-    'people' =>'Хора'
+    'people' =>'Хора',
+    'role' => 'Роля',
+    'deactive' => 'Неактивен',
+    'choose_role' => 'Избери роли'
 ];
 

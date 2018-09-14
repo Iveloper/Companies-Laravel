@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Http\Controllers\Controller;
 
-class CompanyModel extends Model {
+class Company extends Model {
 
     protected $table = 'company';
     public $timestamps = false;
@@ -20,7 +19,7 @@ class CompanyModel extends Model {
         $query = DB::table('company')
                 ->leftJoin('company_type', 'company.contragent_type', '=', 'company_type.id')
                 ->select('company.id', 'company.name', 'adress', 'bulstat', 'phone', 'email', 'note', 'company_type.name as contragent_type');
-        
+
         if ($request->get('searchCompany')) {
             foreach ($request->get('searchCompany') as $key => $value) {
                 $query->where([
@@ -28,7 +27,7 @@ class CompanyModel extends Model {
                 ]);
             }
         }
-        
+
         $sortParam = $request->get('sort', 'id');
         if ($request->get('sort')) {
             if ($request->get('order') && $request->get('order') == 'ASC') {
@@ -54,51 +53,46 @@ class CompanyModel extends Model {
         ];
     }
 
-    //Deletes a company by given ID.
-    public function deleteCompany($id) {
-        Controller::FlashMessages('The company has been', 'danger');
-        
-        return DB::table('company')
-                ->where('id', '=', $id)
-                ->delete();
-    }
-
     //Adds new company to the Company table.
     public function addCompany($data) {
         $data = request()->except(['_token']);
-        Controller::FlashMessages('The company has been added', 'success');
-        
         return DB::table('company')
-                ->insert($data);
+                        ->insert($data);
     }
 
     //Updates the information for a concrete company.
-    public function updateCompany($data) { 
-            Controller::FlashMessages('The company has been updated', 'success');
-            
-            return DB::table('company')
-                    ->where('id', $data['id'])
-                    ->update(['name' => $data['name'],
-                'adress' => $data['adress'],
-                'bulstat' => $data['bulstat'],
-                'contragent_type' => $data['contragent_type'],
-                'email' => $data['email'],
-                'phone' => $data['phone']
-            ]);
-        }
+    public function updateCompany($data) {
+        return DB::table('company')
+                        ->where('id', $data['id'])
+                        ->update(['name' => $data['name'],
+                            'adress' => $data['adress'],
+                            'bulstat' => $data['bulstat'],
+                            'contragent_type' => $data['contragent_type'],
+                            'email' => $data['email'],
+                            'phone' => $data['phone']
+        ]);
+    }
 
     //Shows all the information for a company by given ID.    
     public function record($id) {
         return DB::table('company')
-                ->where('id', '=', $id)
-                ->get();
+                        ->leftJoin('company_type', 'company_type.id', '=', 'company.contragent_type')
+                        ->select('company.*', 'company_type.name AS contragent')
+                        ->where('company.id', '=', $id)
+                        ->get();
     }
-    
+
     //Shows the available contragent types from the "company_type" table.
     public function getContragentTypes() {
         return DB::table('company_type')
-                ->select('*')
-                ->get();
+                        ->select('*')
+                        ->get();
     }
-
+    
+    //Deletes a company by given ID.
+    public function deleteCompany($id) {
+        return DB::table('company')
+                        ->where('id', '=', $id)
+                        ->delete();
+    }
 }

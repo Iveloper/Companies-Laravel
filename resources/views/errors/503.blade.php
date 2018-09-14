@@ -40,8 +40,9 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title">You are not authorized!</div>
             </div>
+            <a href="/company"><button type="button" class="btn btn-primary" style="width: 100%; background-color: #B0BEC5; height: 35px; color: white; border-radius: 8px;">{{trans('company.goBack')}}</button></a>
         </div>
     </body>
 </html>

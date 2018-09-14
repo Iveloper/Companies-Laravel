@@ -19,7 +19,8 @@ class UserController extends Controller {
     //The main function, which does all the magic behind the sorting, searching and ordering the list of users.
     public function index(Request $request) {
         $users = $this->model->getUsers($request);
-        return view('/users/list')->with('users', $users);
+        return view('/users/list')->with('users', $users)
+                ->with('model', $this->model);
     }
 
     //A function that shows all the information from the database about a concrete user.
@@ -30,6 +31,7 @@ class UserController extends Controller {
 
     //Function that returns view with a form for adding new user to the DB.
     public function create() {
+        $this->authorize('create', $this->model);
         $lang = $this->model->getLanguage();
         return view('users/add', compact('lang'));
     }
@@ -54,19 +56,25 @@ class UserController extends Controller {
 
     //A function that returns view with a form for editing info of your choice for a concrete user.
     public function edit($id) {
+        $this->authorize('edit', $this->model);
         $edit = $this->model->record($id);
         $lang = $this->model->getLanguage();
-        return view('/users/edit', compact('edit', 'lang'));
+        $role = $this->model->getRole($id);
+        $allPermissions = $this->model->getAllPermissions();
+
+        return view('/users/edit', compact('edit', 'lang', 'role', 'allPermissions'));
     }
 
     //This function activates an user.
     public function activate($id) {
+        $this->authorize('activate', $this->model);
         $activate = $this->model->activateUser($id);
         return redirect('/users');
     }
 
     //This function deactivates an user.
     public function deactivate($id) {
+        $this->authorize('deactivate', $this->model);
         $delete = $this->model->deactivateUser($id);
 
         return redirect('/users');
@@ -74,6 +82,7 @@ class UserController extends Controller {
 
     //This function returns the view for uploading an user's avatar.
     public function upload($id) {
+        $this->authorize('upload', $this->model);
         $upload = $this->model->record($id);
 
         return view('/users/upload', compact('upload'));

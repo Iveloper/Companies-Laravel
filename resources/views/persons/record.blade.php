@@ -4,11 +4,12 @@
 
 <table class="table table-striped">
     <thead>
-    <th><a href="/people?sort=id&order=">ID</a></th>
-    <th><a href="/people?sort=name&order=>">{{trans('company.name')}}</a></th>
-    <th><a href="/people?sort=adress&order=">{{trans('company.adress')}}</a></th>
-    <th><a href="/people?sort=phone&order=">{{trans('company.phone')}}</a></th>
-    <th><a href="/people?sort=email&order=">{{trans('company.email')}}</a></th>
+    <th>ID</th>
+    <th>{{trans('company.name')}}</th>
+    <th>{{trans('company.adress')}}</th>
+    <th>{{trans('company.phone')}}</th>
+    <th>{{trans('company.email')}}</th>
+    <th>{{trans('company.company')}}</th>
 </thead>
 
 <tbody>
@@ -20,6 +21,7 @@
             <td>{{ $record->adress }}</td>
             <td>{{ $record->phone }}</td>
             <td>{{ $record->email }}</td>
+            <td>{{ $record->company }}</td>
         </tr>
         
     @endforeach

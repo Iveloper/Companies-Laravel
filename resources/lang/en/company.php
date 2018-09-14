@@ -34,5 +34,8 @@ return [
     'edit_profile' => 'Edit Profile',
     'users' => 'Users',
     'companies' => 'Companies',
-    'people' =>'People'
+    'people' =>'People',
+    'role' => 'Role',
+    'deactive' => 'Unactive',
+    'choose_role' => 'Choose Roles'
 ];

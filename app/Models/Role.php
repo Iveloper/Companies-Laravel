@@ -9,13 +9,11 @@
 namespace App\Models;
 
 use App\Models\Permission;
+use Illuminate\Database\Eloquent\Model;
 
-/**
- * Description of Roles
- *
- * @author ivelin
- */
-class Role extends \Illuminate\Database\Eloquent\Model{
+
+
+class Role extends Model{
     
     public function permissions()
     {

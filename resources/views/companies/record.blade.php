@@ -23,8 +23,8 @@
             <td>{{ $record->adress }}</td>
             <td>{{ $record->bulstat }}</td>
             <td>{{ $record->email }}</td>
-            <td>{{ $record->contragent_type }}</td>
             <td>{{ $record->phone }}</td>
+            <td>{{ $record->contragent }}</td>
             
             <td>{{ $record->note }}</td>
         </tr>

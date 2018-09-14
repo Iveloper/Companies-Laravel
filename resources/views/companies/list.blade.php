@@ -3,8 +3,9 @@
 @if(Session::has('message'))
 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
 @endif
+@can('create', $model)
 <a href="{{ route('company_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></a>
-
+@endcan
 
 <form method='GET' class="form-horizontal" action='/company' style="margin-top: 10px; margin-bottom: 10px;">
     <div class="col-md-2">
@@ -36,7 +37,7 @@
 
 <tbody>
     @foreach ($companies['companies'] as $company)
-
+    
     <tr style="background-color: lightgrey">
         <td>{{ $company->id }}</td>
         <td><a href="{{ route('company_show', $company->id) }}">{{ $company->name }}</a></td>
@@ -44,9 +45,15 @@
         <td>{{ $company->bulstat }}</td>
         <td>{{ $company->contragent_type }}</td>
         <td>{{ $company->note }}</td>
+        @can('show', $model)
         <td><a href="{{ route('company_show', $company->id) }}"><button type="submit" class="btn btn-info">{{trans('company.info')}}</button></a></td>
+        @endcan
+        @can('edit', $model)
         <td><a href="{{ route('company_edit', $company->id) }}"><button type="submit" class="btn btn-warning">{{trans('company.edit')}}</button></a></td>
+        @endcan
+        @can('delete', $model)
         <td><a href="{{ route('company_delete', $company->id) }}" onclick="return confirm('Are you sure you want to delete this company?')"><button type="submit" class="btn btn-danger">{{trans('company.delete')}}</button></a></td>
+        @endcan
     </tr>
 
     @endforeach
@@ -64,7 +71,7 @@
         <option selected="selected" value="{{ $perPageOption }}" >{{ $perPageOption }}</option>
         @else
         <option value="{{ $perPageOption }}" >{{ $perPageOption }}</option>
-        
+
         @endif
 
         @endforeach

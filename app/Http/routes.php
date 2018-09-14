@@ -16,6 +16,14 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/show/{id}', ['as' => 'company_show', 'uses' => 'CompanyController@show']);
         Route::get('/delete/{id}', ['as' => 'company_delete', 'uses' => 'CompanyController@delete']);
+
+
+
+
+        Route::get('service/post/show', 'CompanyController@show');
+        Route::get('service/post/create', 'CompanyController@create');
+        Route::get('service/post/update', 'CompanyController@update');
+        Route::get('service/post/delete', 'CompanyController@delete');
     });
 
     Route::group(['prefix' => 'people'], function() {

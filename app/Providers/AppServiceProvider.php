@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
 use Illuminate\Support\ServiceProvider;
 use App\Models\User;
 
@@ -16,11 +17,7 @@ class AppServiceProvider extends ServiceProvider {
         view()->share('languageAll', User::getLanguage());
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
+
     public function register() {
         //
     }

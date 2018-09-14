@@ -1,21 +1,15 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model {
+class User extends Authenticatable {
 
     protected $table = 'users';
     public $timestamps = false;
@@ -23,6 +17,17 @@ class User extends Model {
     public $sort;
     public $page = 1;
     public $perPage = 5;
+
+    public function isSuperAdmin() {
+        $query = DB::table('users')
+                ->join('role_user', 'user_id', '=', 'users.id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                ->select('role_user.role_id AS role', 'roles.name AS role')
+                ->where('users.id', '=', Auth::user()->id)
+                ->get();
+
+        return $query[0]->role;
+    }
 
     public function hasRole($permission) {
         return !!$this->roles->intersect($permission->roles)->count();
@@ -34,7 +39,10 @@ class User extends Model {
 
     //Shows a list of all the users from database.
     public function getUsers($request) {
-        $query = DB::table('users');
+        $query = DB::table('users')
+                ->join('role_user', 'user_id', '=', 'users.id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                ->select('users.*', 'roles.name AS role');
 
         if ($request->get('searchUser')) {
             $query->where([
@@ -85,20 +93,55 @@ class User extends Model {
     public function updateUser($data) {
 
         Controller::FlashMessages('The user has been updated', 'success');
-        return DB::table('users')
-                        ->where('id', $data['id'])
-                        ->update(['username' => $data['username'],
-                            'email' => $data['email'],
-                            'active' => $data['active'],
-                            'language_id' => $data['language_id']
-        ]);
+        DB::beginTransaction();
+            DB::table('users')
+                    ->where('users.id', $data['id'])
+                    ->update(['username' => $data['username'],
+                        'email' => $data['email'],
+                        'active' => $data['active'],
+                        'language_id' => $data['language_id']
+            ]);
+            
+            DB::table('role_user AS ru')
+                    ->leftjoin('users', 'users.id', '=', 'user_id')
+                    ->where('id', $data['id'])
+                    ->update([
+                        'ru.role_id' => $data['role']
+                    ]);
+        DB::commit();
+
+        
+//        return DB::table('users AS u')
+//                        ->join('role_user AS ru', 'user_id', '=', 'users.id')
+//                        ->where('users.id', $data['id'])
+//                        ->update(['u.username' => $data['username'],
+//                            'u.email' => $data['email'],
+//                            'u.active' => $data['active'],
+//                            'u.language_id' => $data['language_id'],
+//                            'ru.role_id' => $data['role']
+//        ]);
     }
 
+    public function getRole() {
+        return DB::table('roles')
+                        
+                        ->select('roles.name AS roles', 'roles.id AS roles_id')
+                        ->get();
+    }
+
+    public function getAllPermissions(){
+        return DB::table('permissions')
+                ->select('permissions.name', 'permissions.id')
+                ->get();
+    }
+    
     //Shows every piece of information about an user by given id.
     public function record($id) {
         return DB::table('users')
-                        ->where('id', '=', $id)
-                        ->select('id', 'email', 'username', 'active', 'language_id')
+                        ->join('role_user', 'user_id', '=', 'users.id')
+                        ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                        ->where('users.id', $id)
+                        ->select('users.*', 'roles.name AS role')
                         ->get();
     }
 
