@@ -38,7 +38,7 @@
 <tbody>
     @foreach ($companies['companies'] as $company)
     
-    <tr style="background-color: lightgrey">
+    <tr>
         <td>{{ $company->id }}</td>
         <td><a href="{{ route('company_show', $company->id) }}">{{ $company->name }}</a></td>
         <td>{{ $company->adress }}</td>
