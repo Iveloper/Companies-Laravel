@@ -19,7 +19,7 @@ class LanguageController extends Controller {
     public function change($id) {
         $this->model->changeLanguage($id);
         $getKey = $this->model->joinUserLanguage();
-
+        Controller::FlashMessages('The language has been changed', 'success');
             session()->put('language', $getKey);
             return back()->withInput();
 

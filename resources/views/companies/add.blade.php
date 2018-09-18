@@ -9,6 +9,7 @@
     </ul>
 </div>
 @endif
+
 {!! Form::open(array('route'=> 'company_store')) !!}
 {!! Form::hidden('user_id', Auth::user()->id ) !!}
 <div class='form' style='text-align: center'>

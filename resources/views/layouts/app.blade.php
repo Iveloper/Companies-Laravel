@@ -55,6 +55,7 @@
                             <li><a href="{{ url('/company') }}">{{trans('company.companies')}}</a></li>
                             <li><a href="{{ url('/people') }}">{{trans('company.people')}}</a></li>
                             <li><a href="{{ url('/users') }}">{{trans('company.users')}}</a></li>
+                           
                         </ul>
                         <li class="dropdown" style="display: flex;">
 

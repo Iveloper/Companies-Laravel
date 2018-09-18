@@ -43,17 +43,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'UserController@index');
 
         Route::get('/create', ['as' => 'user_create', 'uses' => 'UserController@create']);
+        Route::get('/roles', ['as' => 'roles_manage', 'uses' => 'RolesController@roles']);
+        Route::get('/manage/{id}', ['as' => 'permissions_list', 'uses' => 'RolesController@permission']);
         Route::get('/{id}/edit', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
         Route::get('/{id}', ['as' => 'change_language', 'uses' => 'LanguageController@change']);
-
+        
         Route::post('/{id}', ['as' => 'user_update', 'uses' => 'UserController@update']);
         Route::post('/', ['as' => 'user_store', 'uses' => 'UserController@store']);
         Route::post('/{id}/file', ['as' => 'user_file', 'uses' => 'UserController@file']);
-
+        Route::post('/', ['as' => 'user_manage', 'uses' => 'RolesController@manage']);
+        
         Route::get('/{id}/activate', ['as' => 'user_activate', 'uses' => 'UserController@activate']);
         Route::get('/{id}/deactivate', ['as' => 'user_deactivate', 'uses' => 'UserController@deactivate']);
 
         Route::get('/{id}/upload', ['as' => 'user_upload', 'uses' => 'UserController@upload']);
+        
     });
 
     Route::get('/logout', 'HomeController@logout');

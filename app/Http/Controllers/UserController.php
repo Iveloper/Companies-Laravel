@@ -9,7 +9,6 @@ use App\Http\Requests\StoreFilePost;
 
 
 class UserController extends Controller {
-
     public $model;
 
     public function __construct(User $model) {
@@ -45,12 +44,14 @@ class UserController extends Controller {
             session()->put('language', 'en');
         }
         $this->model->updateUser($request->all());
+        Controller::FlashMessages('The user has been updated', 'success');
         return redirect('/users');
     }
 
     //A little piece of witchcraft that adds new user to the database.
     public function store(Request $request, StoreUserPost $user) {
-        $add = $this->model->addUser($request->all());
+        $this->model->addUser($request->all());
+        Controller::FlashMessages('The user has been added', 'success');
         return redirect('/users');
     }
 
@@ -61,22 +62,22 @@ class UserController extends Controller {
         $lang = $this->model->getLanguage();
         $role = $this->model->getRole($id);
         $allPermissions = $this->model->getAllPermissions();
-
         return view('/users/edit', compact('edit', 'lang', 'role', 'allPermissions'));
     }
 
     //This function activates an user.
     public function activate($id) {
         $this->authorize('activate', $this->model);
-        $activate = $this->model->activateUser($id);
+        $this->model->activateUser($id);
+        Controller::FlashMessages('The user has been activated', 'success');
         return redirect('/users');
     }
 
     //This function deactivates an user.
     public function deactivate($id) {
         $this->authorize('deactivate', $this->model);
-        $delete = $this->model->deactivateUser($id);
-
+        $this->model->deactivateUser($id);
+        Controller::FlashMessages('The user has been deactivated', 'danger');
         return redirect('/users');
     }
 
@@ -84,7 +85,6 @@ class UserController extends Controller {
     public function upload($id) {
         $this->authorize('upload', $this->model);
         $upload = $this->model->record($id);
-
         return view('/users/upload', compact('upload'));
     }
 
@@ -93,7 +93,7 @@ class UserController extends Controller {
      * particular folder.*/
     public function file($id, Request $request, StoreFilePost $file) {
         $this->model->uploadAvatar($id, $request);
+        Controller::FlashMessages('The avatar has been uploaded', 'success');
         return redirect('/users');
     }
-
 }

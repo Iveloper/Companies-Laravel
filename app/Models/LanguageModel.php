@@ -13,7 +13,6 @@ class LanguageModel {
     
     //Changes the preferred language for the person who is logged in the system.
     public function changeLanguage($id) {
-        Controller::FlashMessages('The language has been changed', 'success');
         return DB::table('users')
                 ->where('id', Auth::user()->id)
                 ->update(['language_id' => $id]);

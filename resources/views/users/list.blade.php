@@ -5,9 +5,15 @@
 @if(Session::has('message'))
 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
 @endif
+
+@can('manage', $model)
+<td><a href="{{ route('roles_manage') }}"><button type="button" class="btn btn-info" style="width:100%; margin-bottom: 20px;">{{trans('company.roles_manage')}}</button></a></td>
+@endcan
+
 @can('create', $model)
 <a href="{{ route('user_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></button></a>
 @endcan
+
 <form method='GET' class="form-horizontal" action='/users' style="margin-top: 10px; margin-bottom: 10px;">
     <div class="col-md-2">
         <input type="text" class="form-control" name="searchUser[username]" placeholder="{{trans('company.searchByUsername')}}" value="">

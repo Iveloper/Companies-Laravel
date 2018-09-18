@@ -52,5 +52,10 @@ class UserPolicy {
 
         return $user->hasRole($permission);
     }
+    
+    public function manage(User $user, $model) {
+        $permission = $this->getPermission('user_manage');
 
+        return $user->hasRole($permission);
+    }
 }

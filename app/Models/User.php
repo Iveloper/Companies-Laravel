@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use DB;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
@@ -79,7 +78,7 @@ class User extends Authenticatable {
     public function addUser($data) {
 
         $data = request()->except(['_token']);
-        Controller::FlashMessages('The user has been added', 'success');
+        
         return $insert = DB::table('users')->insert([
             ['email' => $data['email'],
                 'username' => $data['username'],
@@ -91,50 +90,31 @@ class User extends Authenticatable {
 
     //Updates the information about a specific user.
     public function updateUser($data) {
-
-        Controller::FlashMessages('The user has been updated', 'success');
-        DB::beginTransaction();
-            DB::table('users')
-                    ->where('users.id', $data['id'])
-                    ->update(['username' => $data['username'],
-                        'email' => $data['email'],
-                        'active' => $data['active'],
-                        'language_id' => $data['language_id']
-            ]);
-            
-            DB::table('role_user AS ru')
-                    ->leftjoin('users', 'users.id', '=', 'user_id')
-                    ->where('id', $data['id'])
-                    ->update([
-                        'ru.role_id' => $data['role']
-                    ]);
-        DB::commit();
-
         
-//        return DB::table('users AS u')
-//                        ->join('role_user AS ru', 'user_id', '=', 'users.id')
-//                        ->where('users.id', $data['id'])
-//                        ->update(['u.username' => $data['username'],
-//                            'u.email' => $data['email'],
-//                            'u.active' => $data['active'],
-//                            'u.language_id' => $data['language_id'],
-//                            'ru.role_id' => $data['role']
-//        ]);
+        DB::beginTransaction();
+        DB::table('users')
+                ->where('users.id', $data['id'])
+                ->update(['username' => $data['username'],
+                    'email' => $data['email'],
+                    'active' => $data['active'],
+                    'language_id' => $data['language_id']
+        ]);
+
+        DB::table('role_user AS ru')
+                ->leftjoin('users', 'users.id', '=', 'user_id')
+                ->where('id', $data['id'])
+                ->update([
+                    'ru.role_id' => $data['role']
+        ]);
+        DB::commit();
     }
 
     public function getRole() {
         return DB::table('roles')
-                        
                         ->select('roles.name AS roles', 'roles.id AS roles_id')
                         ->get();
     }
 
-    public function getAllPermissions(){
-        return DB::table('permissions')
-                ->select('permissions.name', 'permissions.id')
-                ->get();
-    }
-    
     //Shows every piece of information about an user by given id.
     public function record($id) {
         return DB::table('users')
@@ -156,9 +136,7 @@ class User extends Authenticatable {
                 $path . DIRECTORY_SEPARATOR . $data->file('avatar')->getClientOriginalName(), file_get_contents($data->file('avatar')->getRealPath())
         );
         $fileName = $data->file('avatar')->getClientOriginalName();
-
-        Controller::FlashMessages('The avatar has been uploaded', 'success');
-
+        
         return DB::table('users')
                         ->where('id', $id)
                         ->update(['avatar' => $fileName
@@ -167,8 +145,7 @@ class User extends Authenticatable {
 
     //Activates an user.
     public function activateUser($id) {
-        Controller::FlashMessages('The user has been activated', 'success');
-
+       
         return DB::table('users')
                         ->where('id', $id)
                         ->update(['active' => 1]);
@@ -176,7 +153,6 @@ class User extends Authenticatable {
 
     //Deactivates an user.
     public function deactivateUser($id) {
-        Controller::FlashMessages('The user has been deactivated', 'danger');
 
         return DB::table('users')
                         ->where('id', $id)
@@ -202,5 +178,4 @@ class User extends Authenticatable {
                         ->select('language_id')
                         ->where('id', '=', Auth::user()->id);
     }
-
 }

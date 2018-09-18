@@ -37,5 +37,11 @@ return [
     'people' =>'People',
     'role' => 'Role',
     'deactive' => 'Unactive',
-    'choose_role' => 'Choose Roles'
+    'choose_role' => 'Choose permissions',
+    'choose_admin' => 'Admin: ',
+    'choose_user' => 'User: ',
+    'manage' => 'Manage Permissions',
+    'for_users' => 'For Users: ',
+    'for_company' => 'For Companies: ',
+    'for_people' => 'For People: '
 ];
