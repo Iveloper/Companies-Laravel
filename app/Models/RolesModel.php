@@ -24,27 +24,22 @@ class RolesModel {
                 ->select('permissions.name', 'permissions.id', 'pg.name AS permission_group')
                 ->orderBy('pg.position')
                 ->get();
-        
-        
+
         $rolePermissions = DB::table('permission_role as pr')
-                ->select('pr.permission_id', 'pr.role_id')
+//                ->select('pr.permission_id', 'pr.role_id')
                 ->where('pr.role_id', $id)
-                ->get();
+                ->pluck('permission_id');
 
-        for ($i = 0; $i < count($rolePermissions); $i++) {
-            $rolePermissions[$i] = $rolePermissions[$i]->permission_id;
-        }
-
-        $ready = array_map(
-                function($value) {
-            return (int) $value;
-        }, $rolePermissions
-        );
-
-        return[
-            'allPermissions' => $allPermissions,
-            'rolePermissionFlat' => $ready
+        return [
+            'allPermissions' => $this->transformPermissions($allPermissions),
+            'rolePermissions' => $rolePermissions
         ];
+    }
+
+    protected function transformPermissions($allPermissions) {
+        $collection = collect($allPermissions);
+
+        return $collection->groupBy('permission_group')->toArray();
     }
 
     public function manageUsers($data) {
