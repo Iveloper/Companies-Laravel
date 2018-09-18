@@ -26,6 +26,7 @@ class RolesController extends Controller{
         $this->model = $model;
     }
     
+    //TO DO: podredi me ...
         public function roles(){
             $roles = $this->model->getRoles();
             return view('users/roles', compact('roles'));
@@ -33,6 +34,7 @@ class RolesController extends Controller{
         public function permission($id){
         $this->authorize('manage', User::class);
         $permissions = $this->model->getPermissions($id);
+        
         $roleName = $this->model->getRoleName($id);
         return view('users/manage', compact('permissions', 'roleName'));
     }

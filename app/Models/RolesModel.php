@@ -21,14 +21,14 @@ class RolesModel {
     }
 
     public function getPermissions($id) {
+
         $allPermissions = DB::table('permissions')
                 ->get();
 
         $rolePermissions = DB::table('permission_role as pr')
                 ->select('pr.permission_id', 'pr.role_id')
-                ->where('pr.role_id', $id * 1)
+                ->where('pr.role_id', $id)
                 ->get();
-
 
         for ($i = 0; $i < count($rolePermissions); $i++) {
             $rolePermissions[$i] = $rolePermissions[$i]->permission_id;
@@ -66,13 +66,19 @@ class RolesModel {
                 ->where('role_id', $data['role_id'])
                 ->delete();
 
-        for ($i = 0; $i < count($data['permissionForAdmin']); $i++) {
-            DB::table('permission_role')
-                    ->insert([
-                        'permission_id' => $data['permissionForAdmin'][$i] * 1,
-                        'role_id' => $data['role_id'],
+        //  https://laravel.com/docs/5.2/queries#inserts
+
+        $rows = [];
+
+        foreach ($data['permissionForAdmin'] as $permission_id) {
+            array_push($rows, [
+                'permission_id' => $permission_id,
+                'role_id' => $data['role_id']
             ]);
         }
+
+        return DB::table('permission_role')
+                        ->insert($rows);
     }
 
     public function getRoleName($id) {
