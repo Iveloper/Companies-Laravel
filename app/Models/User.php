@@ -78,7 +78,7 @@ class User extends Authenticatable {
     public function addUser($data) {
 
         $data = request()->except(['_token']);
-        
+
         return $insert = DB::table('users')->insert([
             ['email' => $data['email'],
                 'username' => $data['username'],
@@ -90,23 +90,28 @@ class User extends Authenticatable {
 
     //Updates the information about a specific user.
     public function updateUser($data) {
-        
-        DB::beginTransaction();
-        DB::table('users')
-                ->where('users.id', $data['id'])
-                ->update(['username' => $data['username'],
-                    'email' => $data['email'],
-                    'active' => $data['active'],
-                    'language_id' => $data['language_id']
-        ]);
 
-        DB::table('role_user AS ru')
-                ->leftjoin('users', 'users.id', '=', 'user_id')
-                ->where('id', $data['id'])
-                ->update([
-                    'ru.role_id' => $data['role']
-        ]);
-        DB::commit();
+        try {
+            DB::beginTransaction();
+            DB::table('users')
+                    ->where('users.id', $data['id'])
+                    ->update(['username' => $data['username'],
+                        'email' => $data['email'],
+                        'active' => $data['active'],
+                        'language_id' => $data['language_id']
+            ]);
+
+            DB::table('role_user AS ru')
+                    ->leftjoin('users', 'users.id', '=', 'user_id')
+                    ->where('id', $data['id'])
+                    ->update([
+                        'ru.role_id' => $data['role']
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
     }
 
     public function getRole() {
@@ -136,7 +141,7 @@ class User extends Authenticatable {
                 $path . DIRECTORY_SEPARATOR . $data->file('avatar')->getClientOriginalName(), file_get_contents($data->file('avatar')->getRealPath())
         );
         $fileName = $data->file('avatar')->getClientOriginalName();
-        
+
         return DB::table('users')
                         ->where('id', $id)
                         ->update(['avatar' => $fileName
@@ -145,7 +150,7 @@ class User extends Authenticatable {
 
     //Activates an user.
     public function activateUser($id) {
-       
+
         return DB::table('users')
                         ->where('id', $id)
                         ->update(['active' => 1]);
@@ -178,4 +183,5 @@ class User extends Authenticatable {
                         ->select('language_id')
                         ->where('id', '=', Auth::user()->id);
     }
+
 }
