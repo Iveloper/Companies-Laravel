@@ -43,5 +43,9 @@ return [
     'manage' => 'Manage Permissions',
     'for_users' => 'For Users: ',
     'for_company' => 'For Companies: ',
-    'for_people' => 'For People: '
+    'for_people' => 'For People: ',
+    'roles_id' => 'ID',
+    'roles_name' => '',
+    'roles_edit' => 'Редактирай правата за тази роля',
+    'roles_manage' => 'Управление на ролите'
 ];
