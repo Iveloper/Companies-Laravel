@@ -14,6 +14,7 @@ class Controller extends BaseController {
         DispatchesJobs,
         ValidatesRequests;
 
+    //Static function creating flash messages dynamically.
     public static function FlashMessages($message, $alert = 'success') {
         Session::flash('message', $message);
         Session::flash('alert-class', 'alert-'.$alert);

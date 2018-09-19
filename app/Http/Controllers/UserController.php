@@ -61,8 +61,7 @@ class UserController extends Controller {
         $edit = $this->model->record($id);
         $lang = $this->model->getLanguage();
         $role = $this->model->getRole($id);
-        $allPermissions = $this->model->getAllPermissions();
-        return view('/users/edit', compact('edit', 'lang', 'role', 'allPermissions'));
+        return view('/users/edit', compact('edit', 'lang', 'role'));
     }
 
     //This function activates an user.

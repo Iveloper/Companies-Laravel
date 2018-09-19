@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model{
     
+    //Makes many to many relation between permissions and roles.
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);

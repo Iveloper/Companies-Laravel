@@ -35,7 +35,8 @@ class PersonController extends Controller {
     //A function that shows the form for adding new person to the database.
     public function create() {
         $this->authorize('create', $this->model);
-        return view('persons/add');
+        $companies = $this->model->getAllCompanies();
+        return view('persons/add', compact('companies'));
     }
 
     //This function updates the information about a specific person and then redirects to the page with all people in the DB.
@@ -47,7 +48,7 @@ class PersonController extends Controller {
 
     //A piece of code which does the magic of storing new person to the database.
     public function store(Request $request, StorePersonPost $person) {
-        $add = $this->model->addPerson($request->all());
+        $this->model->addPerson($request->all());
         Controller::FlashMessages('The person has been inserted', 'success');
         return redirect('/people');
     }
@@ -56,13 +57,14 @@ class PersonController extends Controller {
     public function edit($id) {
         $this->authorize('create', $this->model);
         $edit = $this->model->record($id);
-        return view('/persons/edit', compact('edit'));
+        $companies = $this->model->getAllCompanies();
+        return view('/persons/edit', compact('edit', 'companies'));
     }
 
     //Dangerous,but yet very effective piece of code,which deletes a certain person once and for all.
     public function delete($id) {
         $this->authorize('delete', $this->model);
-        $delete = $this->model->deletePerson($id);
+        $this->model->deletePerson($id);
         Controller::FlashMessages('The person has been deleted', 'danger');
         return redirect('/people');
     }

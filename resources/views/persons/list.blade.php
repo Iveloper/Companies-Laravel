@@ -68,7 +68,7 @@
 </table>
 {{ $persons['persons']->links() }}
 
-<form method="GET" action="/company" style="text-align: center;">
+<form method="GET" action="/people" style="text-align: center;">
     <select name="option" style="margin-right: 2px;">
 
         <?php $perPageOptions = [5, 10, 15, 20] ?>

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use DB;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 
 class LanguageModel {
 

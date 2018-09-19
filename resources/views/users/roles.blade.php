@@ -15,8 +15,14 @@
     <tr>
         <td>{{ $role->id }}</td>
         <td>{{ $role->name }}</td>
-        <td><a href="{{ route('permissions_list', $role->id) }}"><button type="submit" class="btn btn-warning">{{trans('company.roles_edit')}}</button></a></td>
+        <td>
+            <a href="{{ route('permissions_list', $role->id) }}">
+                <button type="submit" class="btn btn-warning">{{trans('company.roles_edit')}}</button>
+            </a>
+        </td>
         @endforeach
 </tbody>
-
+<a href="{{ URL::previous() }}">
+    <button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.goBack')}}</button>
+</a>
 @endsection

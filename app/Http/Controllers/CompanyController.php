@@ -13,7 +13,8 @@ class CompanyController extends Controller {
     public function __construct(Company $model) {
         $this->model = $model;
     }
-
+    
+    //Visualises all the information about a company in 'companies/list' view.
     public function index(Request $request) {
         $companies = $this->model->getCompanies($request);
         return view('/companies/list')->with('companies', $companies)
@@ -37,14 +38,14 @@ class CompanyController extends Controller {
 
     //This function calls the model and updates the information about specific company
     public function update(Request $request, StoreCompanyPost $company) {
-        $update = $this->model->updateCompany($request->all());
+        $this->model->updateCompany($request->all());
         Controller::FlashMessages('The company has been updated', 'success');
         return redirect('/company');
     }
 
     //Function for storing new company in the database
     public function store(Request $request, StoreCompanyPost $company) {
-        $add = $this->model->addCompany($request->all());
+        $this->model->addCompany($request->all());
         Controller::FlashMessages('The company has been added', 'success');
         return redirect('/company');
     }
@@ -60,7 +61,7 @@ class CompanyController extends Controller {
     //This function deletes a certain company
     public function delete($id) {
         $this->authorize('delete', $this->model);
-        $delete = $this->model->deleteCompany($id);
+        $this->model->deleteCompany($id);
         Controller::FlashMessages('The company has been deleted!', 'danger');
         return redirect('/company');
     }

@@ -12,11 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\RolesModel;
 
-/**
- * Description of RolesController
- *
- * @author ivelin
- */
+
 class RolesController extends Controller {
 
     public $model;
@@ -25,20 +21,21 @@ class RolesController extends Controller {
         $this->model = $model;
     }
 
-    //TO DO: podredi me ...
+    //Returns all the information from 'roles' table to the view 'users/roles'.
     public function roles() {
         $roles = $this->model->getRoles();
         return view('users/roles', compact('roles'));
     }
 
+    //Returns all permissions to the view 'users/manage'.
     public function permission($id) {
         $this->authorize('manage', User::class);
         $permissions = $this->model->getPermissions($id);
-
         $roleName = $this->model->getRoleName($id);
         return view('users/manage', compact('permissions', 'roleName'));
     }
-
+    
+    //If an user is authorized,this piece of code manages all permissions for concrete role.
     public function manage(Request $request) {
         $this->authorize('manage', User::class);
         $this->model->manageUsers($request->all());

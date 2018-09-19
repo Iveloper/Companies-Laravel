@@ -56,7 +56,14 @@ class PersonModel extends Model {
     //Function that adds new person to the database.
     public function addPerson($data) {
         $data = request()->except(['_token']);      
-        return DB::table('Person')->insert($data);
+        return DB::table('Person')
+                ->insert(['name' => $data['name'],
+                    'adress' => $data['adress'],
+                    'phone' => $data['phone'],
+                    'email' => $data['email'],
+                    'company_id' => $data['company'],
+                    'user_id' => $data['user_id']
+                        ]);
     }
 
     //Does all the updating for a specific person's information.
@@ -67,6 +74,7 @@ class PersonModel extends Model {
                 'adress' => $data['adress'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
+                'company_id' => $data['company']
             ]);
     }
 
@@ -76,6 +84,13 @@ class PersonModel extends Model {
                 ->leftJoin('company', 'company.id', '=', 'Person.company_id')
                 ->where('Person.id', '=', $id)
                 ->select('Person.*', 'company.name AS company')->get();     
+    }
+    
+    //Selects all companies' names and ids.
+    public function getAllCompanies(){
+        return DB::table('company')
+                ->select('company.name', 'company.id')
+                ->get();
     }
 
     //Deletes a person by given ID.

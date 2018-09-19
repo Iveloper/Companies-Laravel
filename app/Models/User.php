@@ -17,6 +17,7 @@ class User extends Authenticatable {
     public $page = 1;
     public $perPage = 5;
 
+    //Checks if currently logged user is admin or not.
     public function isSuperAdmin() {
         $query = DB::table('users')
                 ->join('role_user', 'user_id', '=', 'users.id')
@@ -28,10 +29,12 @@ class User extends Authenticatable {
         return $query[0]->role;
     }
 
+    //Via Eloquent's method intersect, this function checks if the user has a specific permission.
     public function hasRole($permission) {
         return !!$this->roles->intersect($permission->roles)->count();
     }
 
+    //Makes many to many relation between roles and permissions.
     public function roles() {
         return $this->belongsToMany(Role::class);
     }
@@ -114,6 +117,7 @@ class User extends Authenticatable {
         }
     }
 
+    //A function which returns all rows from the 'roles' table.
     public function getRole() {
         return DB::table('roles')
                         ->select('roles.name AS roles', 'roles.id AS roles_id')

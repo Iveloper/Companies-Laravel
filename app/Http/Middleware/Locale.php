@@ -1,22 +1,15 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Http\Middleware;
 use Closure;
-use Illuminate\Support\Facades\Session;
-/**
- * Description of Locale
- *
- * @author ivelin
- */
+
 class Locale {
     
-    
+    /*Middleware function that puts user's preferred language to the session
+     * right after logging into the system, this way a user does not need to 
+     * change their language every time,because the preferred language stays 
+     * saved from last time.
+     */
     public function handle($request, Closure $next)
     {
         app()->setLocale(session()->get('language'));
