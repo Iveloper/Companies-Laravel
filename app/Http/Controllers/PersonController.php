@@ -8,9 +8,11 @@ use App\Models\Company;
 use App\Http\Requests\StorePersonPost;
 use App\Http\Controllers\Controller;
 
+
 class PersonController extends Controller {
 
     public $model;
+    public $companies;
 
     public function __construct(PersonModel $model) {
         $this->model = $model;
@@ -36,7 +38,11 @@ class PersonController extends Controller {
     public function create() {
         $this->authorize('create', $this->model);
         $companies = $this->model->getAllCompanies();
-        return view('persons/add', compact('companies'));
+        $locale = $this->model->getUserPreferredLanguage();
+        
+        $getTypes = $this->companies->getContragentTypes();
+        $getCountries = $this->companies->getAllCountries();
+        return view('persons/add', compact('locale', 'getTypes', 'getCountries'))->with('companies', json_encode($companies, true));
     }
 
     //This function updates the information about a specific person and then redirects to the page with all people in the DB.
@@ -58,7 +64,8 @@ class PersonController extends Controller {
         $this->authorize('create', $this->model);
         $edit = $this->model->record($id);
         $companies = $this->model->getAllCompanies();
-        return view('/persons/edit', compact('edit', 'companies'));
+        $locale = $this->model->getUserPreferredLanguage();
+        return view('/persons/edit', compact('edit', 'companies', 'locale'));
     }
 
     //Dangerous,but yet very effective piece of code,which deletes a certain person once and for all.
@@ -66,6 +73,15 @@ class PersonController extends Controller {
         $this->authorize('delete', $this->model);
         $this->model->deletePerson($id);
         Controller::FlashMessages('The person has been deleted', 'danger');
+        return redirect('/people');
+    }
+    
+    public function company(Request $request){
+        return $this->model->getPeopleForCompany($request->id);
+    }
+    
+    public function multipleDelete(Request $request){
+        $this->model->deleteMultiple($request->all());
         return redirect('/people');
     }
 

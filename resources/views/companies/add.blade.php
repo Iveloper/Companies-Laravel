@@ -44,11 +44,34 @@
             @foreach ($getTypes as $contragentType => $val)
 
             <option value="{{$val->id}}">{{$val->name}}</option>
-            
+
             @endforeach
         </select>
     </div>
 
+    <div class="form-group row">
+        <label for="country">{{trans('company.country')}}</label><br>
+        <select name="country" id="country">
+            <option value="0"></option>
+            @foreach ($getCountries as $getCountry)
+
+            <option value="{{$getCountry->id}}">{{$getCountry->name}}</option>
+
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group row">
+        <label for="country">{{trans('company.city')}}</label><br>
+        <select name="city" id="city">
+
+
+            <option value="0"></option>
+
+
+        </select>
+    </div>
+    
     <div class="form-group row">
         <label for="phone">{{trans('company.phone')}}</label><br>
         {!! Form::text('phone', '', array('class'=>"form-control")) !!}
@@ -58,4 +81,39 @@
 </div>
 {!! Form::close() !!}
 <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.goBack')}}</button></a>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#country").on("change", function (event) {
+            event.preventDefault();
+
+            var token = $('input[name="_token"]').val();
+            $.ajax({
+                type: 'GET',
+                url: "/company/city",
+                data: {
+                    id: $(this).val(),
+                    _token: token
+                },
+                success: function (data) {
+                   $('#city option').remove();
+                   
+                   $(data).each(function (index, value) {
+                    $("#city").append($('<option>', {
+                        value: value.name,
+                        text: value.name
+                    }, '</option>'));
+                });
+
+                },
+
+            });
+
+        });
+
+    });
+
+</script>
 @endsection

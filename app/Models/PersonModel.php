@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class PersonModel extends Model {
 
@@ -55,14 +56,20 @@ class PersonModel extends Model {
 
     //Function that adds new person to the database.
     public function addPerson($data) {
-        $data = request()->except(['_token']);      
+        $data = request()->except(['_token']);
+        $getCompanyID = DB::table('company')
+                        ->select('company.id')
+                        ->where('company.name', '=', $data['company'])
+                        ->get();
+
         return DB::table('Person')
-                ->insert(['name' => $data['name'],
-                    'adress' => $data['adress'],
-                    'phone' => $data['phone'],
-                    'email' => $data['email'],
-                    'company_id' => $data['company'],
-                    'user_id' => $data['user_id']
+                ->insert(['name' => $data['p_name'],
+                    'adress' => $data['p_adress'],
+                    'phone' => $data['p_phone'],
+                    'email' => $data['p_email'],
+                    'company_id' => $getCompanyID[0]->id,
+                    'user_id' => $data['user_id'],
+                    'date_of_birth' => $data['date']
                         ]);
     }
 
@@ -74,7 +81,8 @@ class PersonModel extends Model {
                 'adress' => $data['adress'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
-                'company_id' => $data['company']
+                'company_id' => $data['company'],
+                'date_of_birth' => $data['date']
             ]);
     }
 
@@ -99,5 +107,33 @@ class PersonModel extends Model {
                 ->where('id', '=', $id)
                 ->delete();
     }
+    
+    public function getUserPreferredLanguage() {
+        return DB::table('users')
+                        ->leftjoin('languages', 'languages.id', '=', 'users.language_id')
+                        ->select('languages.abbr')
+                        ->where('users.id', '=', Auth::user()->id)
+                        ->get();
+    }
+    
+    public function getPeopleForCompany($id){
+        return DB::table('Person')
+                ->select('Person.*')
+                ->where('company_id', '=', $id)
+                ->get();
+        
+    }
+    
+    public function deleteMultiple($data){
+        $data = json_decode(stripslashes($data['data']));
 
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i] == 'on') {
+                continue;
+            }
+            DB::table('Person')
+                    ->where('id', '=', $data[$i])
+                    ->delete();
+        }
+    }
 }

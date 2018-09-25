@@ -32,6 +32,11 @@
         <label for="phone">{{trans('company.phone')}}</label><br>
         {!! Form::text('phone', $edit[0]->phone, array('class'=>"form-control")) !!}
     </div>
+    
+       <div class="form-group row">
+        <label for="birthday">{{trans('company.birthday')}}</label><br>
+        <input type="text" name="date"  id="date" autocomplete="off">
+    </div>
 
         <div class="form-group row">
         <label for="company">{{trans('company.company')}}</label><br>
@@ -50,4 +55,16 @@
 </div>
 {!! Form::close() !!}
 <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.goBack')}}</button></a>
+
+<script>
+    $(document).ready(function () {      
+        
+        
+        $("#date").datepicker({ dateFormat: 'yy-mm-dd' });
+        
+        
+    });
+</script>
+
+<script type="text/javascript" src="/javascript/datepicker-<?php echo $locale[0]->abbr;?>.js"></script>
 @endsection

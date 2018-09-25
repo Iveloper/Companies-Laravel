@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class Company extends Model {
 
@@ -18,7 +19,7 @@ class Company extends Model {
     public function getCompanies($request) {
         $query = DB::table('company')
                 ->leftJoin('company_type', 'company.contragent_type', '=', 'company_type.id')
-                ->select('company.id', 'company.name', 'adress', 'bulstat', 'phone', 'email', 'note', 'company_type.name as contragent_type');
+                ->select('company.id', 'company.name', 'adress', 'bulstat', 'phone', 'email', 'note', 'company_type.name as contragent_type', 'company_type.id as ct_id');
 
         if ($request->get('searchCompany')) {
             foreach ($request->get('searchCompany') as $key => $value) {
@@ -55,9 +56,23 @@ class Company extends Model {
 
     //Adds new company to the Company table.
     public function addCompany($data) {
+        $getCountryName = DB::table('countries')
+                ->select('countries.name')
+                ->where('countries.id', '=', $data['country'])
+                ->get();
         $data = request()->except(['_token']);
         return DB::table('company')
-                        ->insert($data);
+                        ->insert(['name' => $data['name'],
+                            'adress' => $data['adress'],
+                            'bulstat' => $data['bulstat'],
+                            'contragent_type' => $data['contragent_type'],
+                            'email' => $data['email'],
+                            'phone' => $data['phone'],
+                            'note' => $data['note'],
+                            'user_id' => Auth::user()->id,
+                            'country' => $getCountryName[0]->name,
+                            'city' => $data['city']
+        ]);
     }
 
     //Updates the information for a concrete company.
@@ -88,11 +103,56 @@ class Company extends Model {
                         ->select('*')
                         ->get();
     }
-    
+
+    public function getAllCountries() {
+        return DB::table('countries')
+                        ->get();
+    }
+
+    public function getCities($id) {
+        return DB::table('cities')
+                        ->where('country_id', '=', $id)
+                        ->get();
+    }
+
+    public function editMultiple($data) {
+
+        $companiesID = json_decode(stripslashes($data['data']));
+        for ($i = 0; $i < count($companiesID); $i++) {
+            if ($companiesID[$i] == 'on') {
+                continue;
+            }
+
+            DB::table('company')
+                    ->where('id', $companiesID[$i])
+                    ->update([
+                        'contragent_type' => $data['contragent_type']
+            ]);
+        }
+    }
+
     //Deletes a company by given ID.
     public function deleteCompany($id) {
         return DB::table('company')
                         ->where('id', '=', $id)
                         ->delete();
     }
+
+    public function deleteMultiple($data) {
+
+        $data = json_decode(stripslashes($data['data']));
+
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i] == 'on') {
+                continue;
+            }
+            DB::table('Person')
+                    ->where('company_id', '=', $data[$i])
+                    ->delete();
+            DB::table('company')
+                    ->where('id', '=', $data[$i])
+                    ->delete();
+        }
+    }
+
 }

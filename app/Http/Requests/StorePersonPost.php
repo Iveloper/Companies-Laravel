@@ -24,10 +24,20 @@ class StorePersonPost extends Request
     public function rules()
     {
         return [
-            'name' => 'min:5|max:30|required',
-            'adress' => 'min:10|required',
-            'phone' => 'size: 10',
-            'email' => 'min:8|max:100'
+            'p_name' => 'min:5|max:30|required',
+            'p_adress' => 'min:10|required',
+            'p_phone' => 'size: 10|required',
+            'p_email' => 'min:8|max:100|required'
         ];
     }
+    public function attributes()
+{
+    return[
+        'p_name' => "person's name", 
+        'p_adress' => "person's address",
+        'p_phone' => "person's phone",
+        'p_email' => "person's email"
+    ];
+
+}
 }

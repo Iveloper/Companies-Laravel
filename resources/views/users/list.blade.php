@@ -14,7 +14,8 @@
 <a href="{{ route('user_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></button></a>
 @endcan
 
-<form method='GET' class="form-horizontal" action='/users' style="margin-top: 10px; margin-bottom: 10px;">
+<button type='button' class='btn btn-info' id='filters' style="display: flex;"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
+<form method='GET' class="form-horizontal" id='searchForm' action='/users' style="margin-top: 10px; margin-bottom: 10px; display: none;">
     <div class="col-md-2">
         <input type="text" class="form-control" name="searchUser[username]" placeholder="{{trans('company.searchByUsername')}}" value="">
     </div>
@@ -87,5 +88,14 @@
     <input type="submit" class="btn btn-info" style="margin-left: 2px;"></button>
     <div><h4>{{trans('company.totalRows')}} {{ $users['users']->total() }}</h4></div>
 </form>
+
+<script>
+    $(document).ready(function () {
+
+        $('#filters').click(function () {
+            $('#searchForm').toggle();
+        });
+    });
+</script>
 @endsection
 

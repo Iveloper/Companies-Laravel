@@ -14,8 +14,21 @@
         <!-- Styles -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
-
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+                <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+        
         <style>
+            
             body {
                 font-family: 'Lato';
             }
@@ -49,13 +62,13 @@
                         @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         @else
-                        
+
                         <ul class="nav navbar-nav">
 
                             <li><a href="{{ url('/company') }}">{{trans('company.companies')}}</a></li>
                             <li><a href="{{ url('/people') }}">{{trans('company.people')}}</a></li>
                             <li><a href="{{ url('/users') }}">{{trans('company.users')}}</a></li>
-                           
+
                         </ul>
                         <li class="dropdown" style="display: flex;">
 
@@ -81,14 +94,12 @@
         </nav>
 
         <div class="container">
-           <div class="row"> 
-        @yield('content')
-        </div>
+            <div class="row"> 
+                @yield('content')
+            </div>
         </div>
 
         <!-- JavaScripts -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+
     </body>
 </html>

@@ -9,31 +9,35 @@ use App\Http\Requests\StoreCompanyPost;
 class CompanyController extends Controller {
 
     public $model;
+    public $companiesID;
 
     public function __construct(Company $model) {
         $this->model = $model;
     }
-    
+
     //Visualises all the information about a company in 'companies/list' view.
     public function index(Request $request) {
         $companies = $this->model->getCompanies($request);
-        return view('/companies/list')->with('companies', $companies)
-                ->with('model', $this->model);
+        $getTypes = $this->model->getContragentTypes();
+        return view('/companies/list', compact('getTypes'))->with('companies', $companies)
+                        ->with('model', $this->model);
     }
 
     //Returns the view with full information about the company
     public function show($id) {
         $company = Company::findOrFail($id);
-         $this->authorize('show', $company);
-         $view = $this->model->record($id);
-        return view('companies/record', compact('view'));
+        $this->authorize('show', $company);
+        $view = $this->model->record($id);
+        $companyID = $id;
+        return view('companies/record', compact('view', 'companyID'));
     }
 
     //Function that returns the form for adding new Company.
     public function create() {
         $this->authorize('create', $this->model);
         $getTypes = $this->model->getContragentTypes();
-        return view('companies/add', compact('getTypes'));
+        $getCountries = $this->model->getAllCountries();
+        return view('companies/add', compact('getTypes', 'getCountries'));
     }
 
     //This function calls the model and updates the information about specific company
@@ -64,6 +68,19 @@ class CompanyController extends Controller {
         $this->model->deleteCompany($id);
         Controller::FlashMessages('The company has been deleted!', 'danger');
         return redirect('/company');
+    }
+
+    public function city(Request $request) {
+
+        return $this->model->getCities($request->id);
+    }
+
+    public function multipleDelete(Request $request) {
+        $this->model->deleteMultiple($request->all());
+    }
+
+    public function multipleEdit(Request $request) {
+        $this->model->editMultiple($request->all());
     }
 
 }

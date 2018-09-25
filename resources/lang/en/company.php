@@ -47,5 +47,6 @@ return [
     'roles_id' => 'ID',
     'roles_name' => '',
     'roles_edit' => 'Редактирай правата за тази роля',
-    'roles_manage' => 'Управление на ролите'
+    'roles_manage' => 'Управление на ролите',
+    'birthday' => 'Date of birth'
 ];

@@ -8,8 +8,12 @@
 @can('create', $model)
 <a href="{{ route('person_create') }}"><button type="button" class="btn btn-primary" style="width:100%;">{{trans('company.add')}}</button></a>
 @endcan
-
-<form method='GET' class="form-horizontal" action='/people' style=" margin-top: 10px; margin-bottom: 10px;">
+<div style='display: flex;'>
+    <button type='button' class='btn btn-info' id='filters' style="display: flex;"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
+    <button type='button' class='btn btn-warning' id='multiple' style="display: flex; margin-left: 10px;"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>
+    <button type='button' class='btn btn-danger' id='deleteMultiple' style="display: none; margin-left: 737px;">Delete selected</button>
+</div>
+<form method='GET' class="form-horizontal" action='/people' id='searchForm' style=" margin-top: 10px; margin-bottom: 10px; display: none;">
     <div class="col-md-2">
         <input type="text" class="form-control" name="searchPerson[name]" placeholder="{{trans('company.searchByName')}}" value="">
     </div>
@@ -29,6 +33,7 @@
 
 <table class="table table-striped">
     <thead>
+    <th><input type="checkbox" name="sample" class="selectall" style='display: none;'/></th>
     <th><a href="/people?sort=id&order={{ $persons['order'] }}">ID</a></th>
     <th><a href="/people?sort=name&order={{ $persons['order'] }}">{{trans('company.name')}}</a></th>
     <th><a href="/people?sort=adress&order={{ $persons['order'] }}">{{trans('company.adress')}}</a></th>
@@ -45,6 +50,7 @@
     @foreach ($persons['persons'] as $company)
 
     <tr>
+        <td><input type='checkbox' name='deleteArray[]' value="{{ $company->id }}" class='checkboxForOne' style='display: none;'/></td>
         <td>{{ $company->id }}</td>
         <td><a href="{{ route('person_show', $company->id) }}">{{ $company->name }}</a></td>
         <td>{{ $company->adress }}</td>
@@ -84,5 +90,56 @@
         <input type="submit" class="btn btn-info" style="margin-left: 2px;"></button>
     </select>
     <div><h4>{{trans('company.totalRows')}} {{ count($persons['total']) }}</h4></div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#filters').click(function () {
+                $('#searchForm').toggle();
+            });
+
+            $('#multiple').click(function () {
+                $(".selectall").toggle();
+                $('.checkboxForOne').toggle();
+                $("#deleteMultiple").toggle();
+            });
+
+            $('.selectall').click(function () {
+                if ($(this).is(':checked')) {
+                    $('.checkboxForOne').attr('checked', true);
+                } else {
+                    $('.checkboxForOne').attr('checked', false);
+                }
+            });
+            
+                $("#deleteMultiple").click(function () {
+                var arr = [];
+                var checkbox_value = "";
+                $(":checkbox").each(function () {
+                    var ischecked = $(this).is(":checked");
+                    if (ischecked) {
+                        checkbox_value += $(this).val() + " ";
+                        arr.push($(this).val());
+                    }
+                });
+                var jsonString = JSON.stringify(arr);
+                var token = $('input[name="_token"]').val();
+                
+                $.ajax({
+                   type: 'POST',
+                   url: "/people/multiple/delete",
+                   data: {data : jsonString,
+                       _token: token
+        },
+                   cache: false,
+                   
+                   success: function(){
+                       location.reload();
+                   }
+                });
+            });
+            
+        });
+    </script>
     @endsection
 

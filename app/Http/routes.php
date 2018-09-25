@@ -13,7 +13,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/{id}', ['as' => 'company_update', 'uses' => 'CompanyController@update']);
         Route::post('/', ['as' => 'company_store', 'uses' => 'CompanyController@store']);
+        Route::post('/multiple/delete', ['as' => 'company_multipleDelete', 'uses' => 'CompanyController@multipleDelete']);
+        Route::post('/multiple/edit', ['as' => 'update_multiple', 'uses' => 'CompanyController@multipleEdit']);
 
+        
+        Route::get('/city', ['as' => 'company_city', 'uses' => 'CompanyController@city']);
         Route::get('/show/{id}', ['as' => 'company_show', 'uses' => 'CompanyController@show']);
         Route::get('/delete/{id}', ['as' => 'company_delete', 'uses' => 'CompanyController@delete']);
 
@@ -31,9 +35,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/create', ['as' => 'person_create', 'uses' => 'PersonController@create']);
         Route::get('/{id}/edit', ['as' => 'person_edit', 'uses' => 'PersonController@edit']);
+        Route::get('/people', ['as' => 'person_company', 'uses' => 'PersonController@company']);
 
         Route::post('/{id}', ['as' => 'person_update', 'uses' => 'PersonController@update']);
         Route::post('/', ['as' => 'person_store', 'uses' => 'PersonController@store']);
+        Route::post('/multiple/delete', ['as' => 'people_multipleDelete', 'uses' => 'PersonController@multipleDelete']);
 
         Route::get('/show/{id}', ['as' => 'person_show', 'uses' => 'PersonController@show']);
         Route::get('/delete/{id}', ['as' => 'person_delete', 'uses' => 'PersonController@delete']);

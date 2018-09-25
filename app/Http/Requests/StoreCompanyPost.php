@@ -32,4 +32,18 @@ class StoreCompanyPost extends Request
             'note' => 'max: 250'
         ];
     }
+    
+    public function attributes()
+{
+    return[
+        'name' => "company's name", 
+        'adress' => "company's address",
+        'phone' => "company's phone",
+        'email' => "company's email",
+        'bulstat' => "company's bulstat",
+        'note' => "company's note"
+        
+    ];
+
+}
 }
