@@ -3,7 +3,7 @@
 @section('content')
 
 @if(Session::has('message'))
-<p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+<p id="flashmessage" class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
 @endif
 
 @can('manage', $model)
@@ -96,6 +96,10 @@
             $('#searchForm').toggle();
         });
     });
+    
+            setTimeout(function() {
+            jQuery('#flashmessage').fadeOut();
+        }, 3000);
 </script>
 @endsection
 

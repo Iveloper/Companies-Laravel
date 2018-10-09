@@ -76,13 +76,13 @@ class PersonModel extends Model {
     //Does all the updating for a specific person's information.
     public function updatePerson($data) {     
             return DB::table('Person')
-                    ->where('id', $data['id'])
-                    ->update(['name' => $data['name'],
-                'adress' => $data['adress'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
+                    ->where('id', $data['p_id'])
+                    ->update(['name' => $data['p_name'],
+                'adress' => $data['p_adress'],
+                'phone' => $data['p_phone'],
+                'email' => $data['p_email'],
                 'company_id' => $data['company'],
-                'date_of_birth' => $data['date']
+                'date_of_birth' => $data['p_date']
             ]);
     }
 

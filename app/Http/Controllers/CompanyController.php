@@ -43,14 +43,14 @@ class CompanyController extends Controller {
     //This function calls the model and updates the information about specific company
     public function update(Request $request, StoreCompanyPost $company) {
         $this->model->updateCompany($request->all());
-        Controller::FlashMessages('The company has been updated', 'success');
+        Controller::FlashMessages(trans('company.companyUpdate'), 'success');
         return redirect('/company');
     }
 
     //Function for storing new company in the database
     public function store(Request $request, StoreCompanyPost $company) {
         $this->model->addCompany($request->all());
-        Controller::FlashMessages('The company has been added', 'success');
+        Controller::FlashMessages(trans('company.companyAdd'), 'success');
         return redirect('/company');
     }
 
@@ -66,19 +66,21 @@ class CompanyController extends Controller {
     public function delete($id) {
         $this->authorize('delete', $this->model);
         $this->model->deleteCompany($id);
-        Controller::FlashMessages('The company has been deleted!', 'danger');
+        Controller::FlashMessages(trans('company.companyDelete'), 'danger');
         return redirect('/company');
     }
 
+    //Returns all cities from the database.
     public function city(Request $request) {
-
         return $this->model->getCities($request->id);
     }
-
+    
+    //Deletes multiple companies,based on which checkboxes are checked.
     public function multipleDelete(Request $request) {
         $this->model->deleteMultiple($request->all());
     }
 
+    //Edits contragent types for multiple companies at once.
     public function multipleEdit(Request $request) {
         $this->model->editMultiple($request->all());
     }

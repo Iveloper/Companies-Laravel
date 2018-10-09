@@ -104,19 +104,21 @@ class Company extends Model {
                         ->get();
     }
 
+    //Gets all rows from 'countries' table.
     public function getAllCountries() {
         return DB::table('countries')
                         ->get();
     }
 
+    //Gets all cities by given country's ID.
     public function getCities($id) {
         return DB::table('cities')
                         ->where('country_id', '=', $id)
                         ->get();
     }
-
+    
+    //Edits multiple contragent types by given array of IDs.
     public function editMultiple($data) {
-
         $companiesID = json_decode(stripslashes($data['data']));
         for ($i = 0; $i < count($companiesID); $i++) {
             if ($companiesID[$i] == 'on') {
@@ -137,7 +139,8 @@ class Company extends Model {
                         ->where('id', '=', $id)
                         ->delete();
     }
-
+    
+    //Deletes multiple companies by given array of their IDs.
     public function deleteMultiple($data) {
 
         $data = json_decode(stripslashes($data['data']));
