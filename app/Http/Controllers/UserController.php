@@ -18,6 +18,7 @@ class UserController extends Controller {
     //The main function, which does all the magic behind the sorting, searching and ordering the list of users.
     public function index(Request $request) {
         $users = $this->model->getUsers($request);
+
         return view('/users/list')->with('users', $users)
                 ->with('model', $this->model);
     }
@@ -32,7 +33,8 @@ class UserController extends Controller {
     public function create() {
         $this->authorize('create', $this->model);
         $lang = $this->model->getLanguage();
-        return view('users/add', compact('lang'));
+        $role = $this->model->getRole();
+        return view('users/add', compact('lang'), compact('role'));
     }
 
     //Function that updates the information about a user of your choice.

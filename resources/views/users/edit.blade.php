@@ -36,7 +36,20 @@
             @endif
         </select><br><br>
     </div>
-    
+
+    <div class="form-group row">
+        <label for="choose_role">{{trans('company.choose_role')}}</label><br>
+        <select name="role">
+            @foreach ($role as $role)
+            @if ($edit[0]->role == $role->roles)
+            <option selected='selected' value="{{$role->roles_id}}">{{$role->roles}}</option>
+            @else
+            <option value="{{$role->roles_id}}">{{$role->roles}}</option>
+            @endif
+            @endforeach
+        </select>
+    </div>
+
     <div class="form-group row">     
         <label for="preferred_language">{{trans('company.preferred_language')}}</label><br>
         @foreach ($lang as $language => $val)

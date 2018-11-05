@@ -25,7 +25,6 @@ class User extends Authenticatable {
                 ->select('role_user.role_id AS role', 'roles.name AS role')
                 ->where('users.id', '=', Auth::user()->id)
                 ->get();
-
         return $query[0]->role;
     }
 
@@ -79,21 +78,33 @@ class User extends Authenticatable {
 
     //Adds new user with bcrypt hashed password to the database.
     public function addUser($data) {
-
+        
         $data = request()->except(['_token']);
 
-        return $insert = DB::table('users')->insert([
+           $insert = DB::table('users')->insert([
             ['email' => $data['email'],
                 'username' => $data['username'],
                 'password' => bcrypt($data['password']),
                 'active' => $data['active'],
                 'language_id' => $data['language_id']]
         ]);
+            $getLastId = DB::getPdo()->lastInsertId();
+            
+            $insertRole = DB::table('role_user')->insert([
+                [
+                    'role_id' => $data['choose_role'],
+                    'user_id' => $getLastId
+                ]
+            ]);
+            
+            return [
+              'insert' => $insert,
+              'insertRole' => $insertRole
+            ];
     }
 
     //Updates the information about a specific user.
     public function updateUser($data) {
-
         try {
             DB::beginTransaction();
             DB::table('users')
@@ -103,7 +114,8 @@ class User extends Authenticatable {
                         'active' => $data['active'],
                         'language_id' => $data['language_id']
             ]);
-
+            
+           
             DB::table('role_user AS ru')
                     ->leftjoin('users', 'users.id', '=', 'user_id')
                     ->where('id', $data['id'])

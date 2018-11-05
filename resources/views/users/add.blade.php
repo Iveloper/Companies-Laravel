@@ -9,7 +9,7 @@
     </ul>
 </div>
 @endif
-{!! Form::open(array('route'=> 'user_store')) !!}
+{!! Form::open(array('route'=> 'user_store', 'method'=>'post')) !!}
 <div class='form' style='text-align: center'>
     <div class="form-group row">
         <label for="email">{{trans('company.email')}}</label><br>
@@ -38,6 +38,16 @@
             @foreach ($lang as $language => $val)
 
             <option value="{{$val->id}}">{{$val->language}}</option>
+            
+            @endforeach
+        </select>
+    </div>
+        <div class="form-group row">
+         <label for="choose_role">{{trans('company.choose_role')}}</label><br>
+    <select name="choose_role">
+            @foreach ($role as $role => $val)
+
+            <option value="{{$val->roles_id}}">{{$val->roles}}</option>
             
             @endforeach
         </select>
